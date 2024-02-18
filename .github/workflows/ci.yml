@@ -10,10 +10,10 @@ on:
     branches: [ "develop" ]
 
 env:
-  PATH_PROJECT: src\Result
-  PATH_RELEASE: src\Result\bin\Release
-  PROJECT_NAME: Result.csproj
-  PATH_TEST: tests\Result.Tests.UnitTests
+  PATH_PROJECT: src\Results
+  PATH_RELEASE: src\Results\bin\Release
+  PROJECT_NAME: Results.csproj
+  PATH_TEST: tests\Results.Tests.UnitTests
 
 jobs:
   build:
