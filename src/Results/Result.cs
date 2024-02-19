@@ -1,4 +1,3 @@
-using Results.Factories;
 using Results.ResultTypes;
 
 namespace Results;
@@ -6,21 +5,18 @@ namespace Results;
 /// <summary>
 /// Represents the result of an operation that can either succeed or fail.
 /// </summary>
-/// <typeparam name="TValue">The type of the value contained in a successful result.</typeparam>
-public class Result<TValue>
+public class Result
 {
-	private readonly ResultType _result;
-
+	protected readonly ResultType _result;
+	
 	/// <summary>
 	/// Represents the result of an operation that can either succeed or fail.
 	/// </summary>
-	/// <typeparam name="TValue">The type of the value contained in a successful result.</typeparam>
 	public Result(ResultType result)
 	{
 		_result = result;
 	}
-
-
+	
 	/// <summary>
 	/// Gets a boolean value which represents the status of the operation.
 	/// </summary>
@@ -34,19 +30,8 @@ public class Result<TValue>
 	/// </summary>
 	/// <value><c>true</c> if the result is faulted; otherwise, <c>false</c>.</value>
 	public bool IsFaulted => !_result.IsSucceed;
-
-
-	/// <summary>
-	/// Retrieves the operation result if it was successful.
-	/// </summary>
-	/// <typeparam name="TValue">
-	/// The type of the value which is contained in a successful result.
-	/// </typeparam>
-	/// <returns>
-	/// An instance of <see cref="Ok{TValue}"/>  representing the result of a successful operation; otherwise, null.
-	/// </returns>
-	public Ok<TValue>? Ok() => _result as Ok<TValue>;
-
+	
+	
 	/// <summary>
 	/// Retrieves the error of the operation if it was unsuccessful; otherwise, null.
 	/// </summary>
@@ -54,44 +39,8 @@ public class Result<TValue>
 	/// An instance of <see cref="Error"/> representing the error of an unsuccessful operation; otherwise, null.
 	/// </returns>
 	public Error? Error() => _result as Error;
-
-	/// <summary>
-	/// Retrieves the value contained in a successful result if the operation was successful, or throws an exception.
-	/// </summary>
-	/// <returns>
-	/// The value of the successful result.
-	/// </returns>
-	/// <exception cref="InvalidOperationException">
-	/// Thrown when the operation was not successful and the result object does not contain the expected value.
-	/// </exception>
-	public TValue Unwrap() => IsSucceed
-		? Ok()!.Value
-		: throw new InvalidOperationException(
-			"The operation could not be completed successfully. Result object contains only error data; Expected 'Value' is missing.");
-
-	/// <summary>
-	/// Retrieves the value contained in a successful result or returns the default value.
-	/// </summary>
-	/// <typeparam name="TValue">The type of the value contained in a successful result.</typeparam>
-	/// <returns>
-	/// The value contained in a successful result if the operation succeeded;
-	/// otherwise, the default value of type <typeparamref name="TValue"/>.
-	/// </returns>
-	public TValue? UnwrapOrDefault() => IsSucceed
-		? Ok()!.Value
-		: default;
-
-	/// <summary>
-	/// Retrieves the value contained in a successful result, otherwise returns the provided default value.
-	/// </summary>
-	/// <typeparam name="TValue">The type of the value contained in a successful result.</typeparam>
-	/// <param name="defaultValue">The default value to return if the result is not successful.</param>
-	/// <returns>The unwrapped value if the result is successful, otherwise the specified default value.</returns>
-	public TValue UnwrapOr(TValue defaultValue) => IsSucceed
-		? Ok()!.Value
-		: defaultValue;
-
-
+	
+	
 	/// <summary>
 	/// Retrieves the errors of the operation if it was failure; otherwise, throws an exception.
 	/// </summary>
@@ -126,8 +75,7 @@ public class Result<TValue>
 	public object[] UnwrapErrorOr(params object[] defaultValue) => IsFaulted
 		? Error()!.Errors
 		: defaultValue;
-
-
+	
 	/// <summary>
 	/// Matches the result of an operation using success and error functions.
 	/// </summary>
@@ -135,19 +83,10 @@ public class Result<TValue>
 	/// <param name="success">The function to invoke if the operation succeeds.</param>
 	/// <param name="fail">The function to invoke if the operation fails.</param>
 	/// <returns>The result of the matched operation.</returns>
-	public TReturn Match<TReturn>(Func<TValue, TReturn> success, Func<Error, TReturn> fail) =>
-		IsSucceed ? success(Unwrap()) : fail(Error()!);
+	public TReturn Match<TReturn>(Func<TReturn> success, Func<Error, TReturn> fail) =>
+		IsSucceed ? success() : fail(Error()!);
 
-	/// <summary>
-	/// Executes the specified function if the operation was successful.
-	/// </summary>
-	/// <typeparam name="TReturn">The return type of the function.</typeparam>
-	/// <param name="function">The function to execute.</param>
-	/// <returns>
-	/// The result of the function execution if the operation was successful, or <see langword="default"/> if the operation failed.
-	/// </returns>
-	public TReturn? OnSuccess<TReturn>(Func<TValue, TReturn> function) => IsSucceed ? function(Unwrap()) : default;
-
+	
 	/// <summary>
 	/// Executes the specified function if the result represents a failure.
 	/// </summary>
@@ -155,36 +94,23 @@ public class Result<TValue>
 	/// <param name="function">The function to execute.</param>
 	/// <returns>The result of the function if the result represents a failure; otherwise, the default value of TReturn.</returns>
 	public TReturn? OnFail<TReturn>(Func<Error, TReturn> function) => IsFaulted ? function(Error()!) : default;
-
-
-	/// <summary>
-	/// Executes the specified action on the value contained in a successful result.
-	/// </summary>
-	/// <param name="action">
-	/// The action to execute on the value.
-	/// </param>
-	/// <returns>
-	/// The current instance of the <see cref="Result{TValue}"/> object.
-	/// </returns>
-	public Result<TValue> Inspect(Action<TValue> action)
-	{
-		if (IsSucceed)
-			action(Unwrap());
-		return this;
-	}
-
+	
+	
 	/// <summary>
 	/// Executes the specified action on the error contained in a failure result.
 	/// </summary>
 	/// <param name="action">The action to perform with the Error object.</param>
 	/// <returns>The current instance of the <see cref="Result{TValue}"/> object.</returns>
-	public Result<TValue> InspectError(Action<Error> action)
+	public Result InspectError(Action<Error> action)
 	{
 		if (IsFaulted)
 			action(Error()!);
 		return this;
 	}
-
+	
+	public static implicit operator Result(TValue value) => TypedResult.Ok(value);
+	public static implicit operator Result<TValue>(Exception exception) => TypedResult.Error<TValue>(exception);
+	
 	/// <summary>
 	/// Gets the type of the result contained in the Result object.
 	/// </summary>
@@ -194,9 +120,6 @@ public class Result<TValue>
 	/// This method retrieves the type of the result stored within the Result object.
 	/// </remarks>
 	public Type GetResultType() => _result.GetType();
-
-	public static implicit operator Result<TValue>(TValue value) => TypedResult.Ok(value);
-	public static implicit operator Result<TValue>(Exception exception) => TypedResult.Error<TValue>(exception);
-
+	
 	public override string ToString() => _result.ToString();
 }
