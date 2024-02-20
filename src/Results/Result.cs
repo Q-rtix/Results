@@ -1,4 +1,8 @@
+using System.Security.Principal;
+using Results.Factories;
 using Results.ResultTypes;
+using Results.WellKnownErrors;
+using Results.WellKnownErrors.Extensions;
 
 namespace Results;
 
@@ -38,8 +42,18 @@ public class Result
 	/// <returns>
 	/// An instance of <see cref="Error"/> representing the error of an unsuccessful operation; otherwise, null.
 	/// </returns>
-	public Error? Error() => _result as Error;
-	
+	protected Error? Error() => _result as Error;
+
+	/// <summary>
+	/// Retrieves the errors of the operation if it was failure; otherwise, throws an exception.
+	/// </summary>
+	/// <returns>
+	/// An array of objects representing the error data if the Result is a failure.
+	/// </returns>
+	/// <exception cref="InvalidOperationException">
+	/// Thrown when the operation could be completed successfully. Result object contains only data; Expected 'Errors' are missing.
+	/// </exception>
+	public object[] Errors => UnwrapError();
 	
 	/// <summary>
 	/// Retrieves the errors of the operation if it was failure; otherwise, throws an exception.
@@ -52,8 +66,7 @@ public class Result
 	/// </exception>
 	public object[] UnwrapError() => IsFaulted
 		? Error()!.Errors
-		: throw new InvalidOperationException(
-			"The operation could be completed successfully. Result object contains only data; Expected 'Errors' are missing.");
+		: throw new InvalidOperationException(WellKnownError.OperationSucceed.Description());
 
 	/// <summary>
 	/// Retrieves the error of the operation if it was failure; otherwise, returns the default value.
@@ -94,6 +107,16 @@ public class Result
 	/// <param name="function">The function to execute.</param>
 	/// <returns>The result of the function if the result represents a failure; otherwise, the default value of TReturn.</returns>
 	public TReturn? OnFail<TReturn>(Func<Error, TReturn> function) => IsFaulted ? function(Error()!) : default;
+
+	/// <summary>
+	/// Executes the specified function if the operation was successful.
+	/// </summary>
+	/// <typeparam name="TReturn">The return type of the function.</typeparam>
+	/// <param name="function">The function to execute.</param>
+	/// <returns>
+	/// The result of the function execution if the operation was successful, or <see langword="default"/> if the operation failed.
+	/// </returns>
+	public TReturn? OnSuccess<TReturn>(Func<TReturn> function) => IsSucceed ? function() : default;
 	
 	
 	/// <summary>
@@ -108,8 +131,7 @@ public class Result
 		return this;
 	}
 	
-	public static implicit operator Result(TValue value) => TypedResult.Ok(value);
-	public static implicit operator Result<TValue>(Exception exception) => TypedResult.Error<TValue>(exception);
+	public static implicit operator Result(Exception exception) => TypedResult.Error(exception);
 	
 	/// <summary>
 	/// Gets the type of the result contained in the Result object.

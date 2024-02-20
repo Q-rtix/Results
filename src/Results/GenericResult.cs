@@ -1,5 +1,7 @@
 using Results.Factories;
 using Results.ResultTypes;
+using Results.WellKnownErrors;
+using Results.WellKnownErrors.Extensions;
 
 namespace Results;
 
@@ -27,7 +29,9 @@ public class Result<TValue> : Result
 	/// <returns>
 	/// An instance of <see cref="Ok{TValue}"/>  representing the result of a successful operation; otherwise, null.
 	/// </returns>
-	public Ok<TValue>? Ok() => _result as Ok<TValue>;
+	protected Ok<TValue>? Ok() => _result as Ok<TValue>;
+
+	public TValue Value => Unwrap();
 
 	/// <summary>
 	/// Retrieves the value contained in a successful result if the operation was successful, or throws an exception.
@@ -40,8 +44,7 @@ public class Result<TValue> : Result
 	/// </exception>
 	public TValue Unwrap() => IsSucceed
 		? Ok()!.Value
-		: throw new InvalidOperationException(
-			"The operation could not be completed successfully. Result object contains only error data; Expected 'Value' is missing.");
+		: throw new InvalidOperationException(WellKnownError.OperationFailed.Description());
 
 	/// <summary>
 	/// Retrieves the value contained in a successful result or returns the default value.
@@ -64,7 +67,7 @@ public class Result<TValue> : Result
 	public TValue UnwrapOr(TValue defaultValue) => IsSucceed
 		? Ok()!.Value
 		: defaultValue;
-	
+
 
 	/// <summary>
 	/// Matches the result of an operation using success and error functions.
@@ -102,7 +105,7 @@ public class Result<TValue> : Result
 			action(Unwrap());
 		return this;
 	}
-	
+
 	/// <summary>
 	/// Executes the specified action on the error contained in a failure result.
 	/// </summary>
