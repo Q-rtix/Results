@@ -119,6 +119,7 @@ public class Result
 	}
 
 	public static implicit operator Result(Exception exception) => TypedResult.Error(exception);
+	public static implicit operator Result(List<Exception> exceptions) => TypedResult.Error(exceptions);
 
 	/// <summary>
 	///     Gets the type of the result contained in the Result object.
@@ -128,7 +129,7 @@ public class Result
 	///     The Result object represents the result of an operation that can either succeed or fail.
 	///     This method retrieves the type of the result stored within the Result object.
 	/// </remarks>
-	public Type GetResultType() => result.GetType();
+	public Type ResultType => result.GetType();
 
 	public override string ToString() => result.ToString();
 }

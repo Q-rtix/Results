@@ -2,7 +2,7 @@ using Results.ResultTypes;
 
 namespace Results.Tests.UnitTests.ResultTypesTests;
 
-public class OkTests
+public class GenericOkTests
 {
     [Fact]
     public void Ok_ParameterizedConstructor_ShouldCreateInstanceWithExpectedValue()
@@ -57,18 +57,5 @@ public class OkTests
         
         // Assert
         Assert.Equal($"Ok Result: {value}", okResult.ToString());
-    }
-
-    [Fact]
-    public void Ok_GetType_ShouldReturnOkType()
-    {
-        // Arrange
-        const string value = "Test value";
-        
-        // Act
-        var okResult = new Ok<string>(value);
-        
-        // Assert
-        Assert.IsType<Ok<string>>(okResult);
     }
 }

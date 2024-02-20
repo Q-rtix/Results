@@ -23,11 +23,18 @@ public class Error : ResultType
     public object[] Errors { get; protected set; }
 
     /// <summary>
-    ///     Represents an implicit operator for creating an instance of the <see cref="Ok{T}" /> class.
+    ///     Represents an implicit operator for creating an instance of the <see cref="Error" /> class.
     /// </summary>
     /// <param name="exception">The exception to assign to the <see cref="Error" /> instance.</param>
     /// <returns>An instance of the <see cref="Error" /> class with the specified exception error.</returns>
     public static implicit operator Error(Exception exception) => new(exception);
+    
+    /// <summary>
+    ///     Represents an implicit operator for creating an instance of the <see cref="Error" /> class.
+    /// </summary>
+    /// <param name="exceptions">The exception to assign to the <see cref="Error" /> instance.</param>
+    /// <returns>An instance of the <see cref="Error" /> class with the specified exception error.</returns>
+    public static implicit operator Error(List<Exception> exceptions) => new(exceptions);
 
     /// <summary>
     ///     Provides a string representation of the Error object.
