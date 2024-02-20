@@ -3,9 +3,9 @@ using System.Reflection;
 
 namespace Results.WellKnownErrors.Extensions;
 
-public static class WellKnownErrorExtensions
+internal static class WellKnownErrorExtensions
 {
-	public static string Description(this WellKnownError self)
+	internal static string Description(this WellKnownError self)
 	{
 		var name = self.ToString();
 		var field = self.GetType().GetField(name);
