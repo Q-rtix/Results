@@ -52,7 +52,7 @@ public class Result
 	/// <returns>
 	///     An instance of <see cref="Error" /> representing the error of an unsuccessful operation; otherwise, null.
 	/// </returns>
-	protected Error? Error() => result as Error;
+	public Error? Error() => result as Error;
 
 	/// <summary>
 	///     Retrieves the error of the operation if it was failure; otherwise, returns the default value.

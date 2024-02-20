@@ -29,7 +29,7 @@ public class Result<TValue> : Result
 	/// <returns>
 	/// An instance of <see cref="Ok{TValue}"/>  representing the result of a successful operation; otherwise, null.
 	/// </returns>
-	protected Ok<TValue>? Ok() => result as Ok<TValue>;
+	public Ok<TValue>? Ok() => result as Ok<TValue>;
 
 	/// <summary>
 	/// Retrieves the value contained in a successful result if the operation was successful, or throws an exception.
