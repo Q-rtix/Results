@@ -29,9 +29,7 @@ public class Result<TValue> : Result
 	/// <returns>
 	/// An instance of <see cref="Ok{TValue}"/>  representing the result of a successful operation; otherwise, null.
 	/// </returns>
-	protected Ok<TValue>? Ok() => _result as Ok<TValue>;
-
-	public TValue Value => Unwrap();
+	protected Ok<TValue>? Ok() => result as Ok<TValue>;
 
 	/// <summary>
 	/// Retrieves the value contained in a successful result if the operation was successful, or throws an exception.
@@ -42,7 +40,7 @@ public class Result<TValue> : Result
 	/// <exception cref="InvalidOperationException">
 	/// Thrown when the operation was not successful and the result object does not contain the expected value.
 	/// </exception>
-	public TValue Unwrap() => IsSucceed
+	public TValue Value => IsSucceed
 		? Ok()!.Value
 		: throw new InvalidOperationException(WellKnownError.OperationFailed.Description());
 
@@ -54,7 +52,7 @@ public class Result<TValue> : Result
 	/// The value contained in a successful result if the operation succeeded;
 	/// otherwise, the default value of type <typeparamref name="TValue"/>.
 	/// </returns>
-	public TValue? UnwrapOrDefault() => IsSucceed
+	public TValue? GetValueOrDefault() => IsSucceed
 		? Ok()!.Value
 		: default;
 
@@ -64,7 +62,7 @@ public class Result<TValue> : Result
 	/// <typeparam name="TValue">The type of the value contained in a successful result.</typeparam>
 	/// <param name="defaultValue">The default value to return if the result is not successful.</param>
 	/// <returns>The unwrapped value if the result is successful, otherwise the specified default value.</returns>
-	public TValue UnwrapOr(TValue defaultValue) => IsSucceed
+	public TValue GetValueOr(TValue defaultValue) => IsSucceed
 		? Ok()!.Value
 		: defaultValue;
 
@@ -77,7 +75,7 @@ public class Result<TValue> : Result
 	/// <param name="fail">The function to invoke if the operation fails.</param>
 	/// <returns>The result of the matched operation.</returns>
 	public TReturn Match<TReturn>(Func<TValue, TReturn> success, Func<Error, TReturn> fail) =>
-		IsSucceed ? success(Unwrap()) : fail(Error()!);
+		IsSucceed ? success(Value) : fail(Error()!);
 
 	/// <summary>
 	/// Executes the specified function if the operation was successful.
@@ -87,7 +85,7 @@ public class Result<TValue> : Result
 	/// <returns>
 	/// The result of the function execution if the operation was successful, or <see langword="default"/> if the operation failed.
 	/// </returns>
-	public TReturn? OnSuccess<TReturn>(Func<TValue, TReturn> function) => IsSucceed ? function(Unwrap()) : default;
+	public TReturn? OnSuccess<TReturn>(Func<TValue, TReturn> function) => IsSucceed ? function(Value) : default;
 
 
 	/// <summary>
@@ -102,7 +100,7 @@ public class Result<TValue> : Result
 	public Result<TValue> Inspect(Action<TValue> action)
 	{
 		if (IsSucceed)
-			action(Unwrap());
+			action(Value);
 		return this;
 	}
 
