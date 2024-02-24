@@ -13,7 +13,7 @@ public class Result
 	protected readonly ResultType result;
 
 	/// <summary>
-	///     Represents the result of an operation that can either succeed or fail.
+	///     Create a new instance of <see cref="Result"/>.
 	/// </summary>
 	public Result(ResultType result) => this.result = result;
 
