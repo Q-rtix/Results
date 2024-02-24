@@ -43,7 +43,7 @@ public class GenericResultTests
 		var result = TypedResult.Ok(value);
 		
 		// Assert
-		Assert.IsType<Ok<string>>(result.ResultType);
+		Assert.Equal(typeof(Ok<string>), result.ResultType);
 	}
 	
 	[Fact]
@@ -54,7 +54,7 @@ public class GenericResultTests
 		// Act
 		var result = TypedResult.Error<string>(errors);
 		// Assert
-		Assert.IsType<Error>(result.ResultType);
+		Assert.Equal(typeof(Error), result.ResultType);
 	}
 	
 	[Fact]
