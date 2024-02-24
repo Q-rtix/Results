@@ -1,4 +1,3 @@
-using Results.Factories;
 using Results.ResultTypes;
 using Results.WellKnownErrors;
 using Results.WellKnownErrors.Extensions;
@@ -18,7 +17,6 @@ public class Result<TValue> : Result
 	public Result(ResultType result) : base(result)
 	{
 	}
-
 
 	/// <summary>
 	/// Retrieves the operation result if it was successful.
@@ -116,6 +114,6 @@ public class Result<TValue> : Result
 		return this;
 	}
 
-	public static implicit operator Result<TValue>(TValue value) => TypedResult.Ok(value);
-	public static implicit operator Result<TValue>(Exception exception) => TypedResult.Error<TValue>(exception);
+	public static implicit operator Result<TValue>(Ok<TValue> ok) => new(ok);
+	public static implicit operator Result<TValue>(Error error) => new(error);
 }

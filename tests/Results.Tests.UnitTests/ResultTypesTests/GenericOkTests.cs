@@ -33,20 +33,6 @@ public class GenericOkTests
     }
     
     [Fact]
-	public void Ok_ImplicitOperator_ShouldCreateInstanceWithExpectedValue()
-	{
-        // Arrange
-		const string expectedResult = "Test value";
-        
-        // Act
-		Ok<string> okResult = expectedResult;
-        
-        // Assert
-        Assert.True(okResult.IsSucceed);
-		Assert.Equal(expectedResult, okResult.Value);
-	}
-    
-    [Fact]
     public void Ok_ToString_ShouldReturnCorrectString()
     {
         // Arrange

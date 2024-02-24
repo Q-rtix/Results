@@ -1,10 +1,38 @@
-using Results.Factories;
 using Results.ResultTypes;
 
 namespace Results.Tests.UnitTests.ResultTests;
 
 public class GenericResultTests
 {
+	
+	[Fact]
+	public void GenericResult_ImplicitOperator_WhenResultIsError()
+	{
+		// Arrange
+		const string error = "Test exception";
+		
+		// Act
+		Result<int> result = new Error(error);
+		
+		// Assert
+		Assert.True(result.IsFaulted);
+		Assert.False(result.IsSucceed);
+		Assert.Equal(typeof(Error), result.GetType());
+		Assert.Equal([error], result.Errors);
+	}
+	
+	[Fact]
+	public void GenericResult_ImplicitOperator_WhenResultIsOk()
+	{
+		// Act
+		Result<int> result = new Ok<int>(2);
+		
+		// Assert
+		Assert.Equal(typeof(Ok), result.GetType());
+		Assert.True(result.IsSucceed);
+		Assert.False(result.IsFaulted);
+	}
+	
 	[Fact]
 	public void GenericResult_Constructor_WhenResultTypeIsOk_CreatesInstanceWithExpectedValues()
 	{
@@ -12,7 +40,7 @@ public class GenericResultTests
 		const string value = "successful value";
 		
 		// Act
-		var result = TypedResult.Ok(value);
+		Result<string> result = new Ok<string>(value);
 		
 		// Assert
 		Assert.Equal(value, result.Value);
@@ -26,7 +54,7 @@ public class GenericResultTests
 		var errors = new List<object> { "error 1", "error 2" };
 		
 		// Act
-		var result = TypedResult.Error<string>(errors);
+		Result<string> result = new Error(errors);
 		
 		// Assert
 		Assert.Equal(errors, result.Errors);
@@ -40,7 +68,7 @@ public class GenericResultTests
 		const string value = "successful value";
 		
 		// Act
-		var result = TypedResult.Ok(value);
+		Result<string> result = new Ok<string>(value);
 		
 		// Assert
 		Assert.Equal(typeof(Ok<string>), result.ResultType);
@@ -52,7 +80,7 @@ public class GenericResultTests
 		// Arrange
 		var errors = new List<object> { "error 1", "error 2" };
 		// Act
-		var result = TypedResult.Error<string>(errors);
+		Result<string> result = new Error(errors);
 		// Assert
 		Assert.Equal(typeof(Error), result.ResultType);
 	}
@@ -62,7 +90,7 @@ public class GenericResultTests
 	{
 		// Arrange
 		const string value = "successful value";
-		var result = TypedResult.Ok(value);
+		Result<string> result = new Ok<string>(value);
 		
 		// Act
 		var resultValue = result.Value;
@@ -76,7 +104,7 @@ public class GenericResultTests
 	{
 		// Arrange
 		var errors = new List<object> { "error 1", "error 2" };
-		var result = TypedResult.Error<string>(errors);
+		Result<int> result = new Error(errors);
 		
 		// Act & Assert
 		Assert.Throws<InvalidOperationException>(() => result.Value);
@@ -87,7 +115,7 @@ public class GenericResultTests
 	{
 		// Arrange
 		const string value = "successful value";
-		var result = TypedResult.Ok(value);
+		Result<string> result = new Ok<string>(value);
 		
 		// Act
 		var resultValue = result.GetValueOrDefault();
@@ -101,7 +129,7 @@ public class GenericResultTests
 	{
 		// Arrange
 		var errors = new List<object> { "error 1", "error 2" };
-		var result = TypedResult.Error<string>(errors);
+		Result<int> result = new Error(errors);
 		
 		// Act
 		var resultValue = result.GetValueOrDefault();
@@ -115,7 +143,7 @@ public class GenericResultTests
 	{
 		// Arrange
 		const string value = "successful value";
-		var result = TypedResult.Ok(value);
+		Result<string> result = new Ok<string>(value);
 		
 		// Act
 		var resultValue = result.GetValueOr("default value");
@@ -129,7 +157,7 @@ public class GenericResultTests
 	{
 		// Arrange
 		var errors = new List<object> { "error 1", "error 2" };
-		var result = TypedResult.Error<string>(errors);
+		Result<string> result = new Error(errors);
 		
 		// Act
 		var resultValue = result.GetValueOr("default value");
@@ -143,7 +171,7 @@ public class GenericResultTests
 	{
 		// Arrange
 		const string value = "successful value";
-		var result = TypedResult.Ok(value);
+		Result<string> result = new Ok<string>(value);
 		
 		// Act
 		var resultValue = result.Match(success: val => val,
@@ -158,7 +186,7 @@ public class GenericResultTests
 	{
 		// Arrange
 		var errors = new List<object> { "error 1", "error 2" };
-		var result = TypedResult.Error<string>(errors);
+		Result<string> result = new Error(errors);
 		
 		// Act
 		var resultValue =

@@ -8,5 +8,5 @@ internal enum WellKnownError
 	OperationSucceed,
 	
 	[Description("The operation could not be completed successfully. Result object contains only error data; Expected 'Value' is missing.")]
-	OperationFailed
+	OperationFailed,
 }

@@ -1,4 +1,3 @@
-using Results.Factories;
 using Results.ResultTypes;
 using Results.WellKnownErrors;
 using Results.WellKnownErrors.Extensions;
@@ -118,8 +117,8 @@ public class Result
 		return this;
 	}
 
-	public static implicit operator Result(Exception exception) => TypedResult.Error(exception);
-	public static implicit operator Result(List<Exception> exceptions) => TypedResult.Error(exceptions);
+	public static implicit operator Result(Ok ok) => new(ok);
+	public static implicit operator Result(Error error) => new(error);
 
 	/// <summary>
 	///     Gets the type of the result contained in the Result object.

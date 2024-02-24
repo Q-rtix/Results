@@ -20,14 +20,6 @@ public class Ok<TValue> : Ok
     public Ok(TValue value) => Value = value;
 
     /// <summary>
-    ///     Represents an implicit operator for creating an instance of the <see cref="Ok{T}" /> class.
-    /// </summary>
-    /// <typeparam name="TValue">The type of the value.</typeparam>
-    /// <param name="value">The value to assign to the <see cref="Ok{T}" /> instance.</param>
-    /// <returns>An instance of the <see cref="Ok{T}" /> class with the specified value.</returns>
-    public static implicit operator Ok<TValue>(TValue value) => new(value);
-
-    /// <summary>
     ///     Returns a string that represents the current object.
     /// </summary>
     /// <returns>A string that represents the current object.</returns>

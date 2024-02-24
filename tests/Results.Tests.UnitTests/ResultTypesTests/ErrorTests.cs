@@ -44,33 +44,6 @@ public class ErrorTests
         // Assert
         Assert.Equal(expectedErrors, errorInstance.Errors);
     }
-    
-    [Fact]
-	public void Error_ImplicitOperator_ShouldCreateInstanceWithExceptionError()
-	{
-		// Arrange
-		var exception = new Exception("Some exception");
-		// Act
-		Error errorInstance = exception;
-		// Assert
-		Assert.Equal(exception, errorInstance.Errors[0]);
-	}
-
-    [Fact]
-    public void Error_ImplicitOperator_ShouldCreateInstanceWithListExceptionError()
-	{
-		// Arrange
-		var exceptions = new List<Exception>
-		{
-			new("Some exception"),
-			new("Some exception 2")
-		};
-		// Act
-		Error errorInstance = exceptions;
-		// Assert
-		Assert.Equal(exceptions[0], errorInstance.Errors[0]);
-		Assert.Equal(exceptions[1], errorInstance.Errors[1]);
-	}
 	
 	[Fact]
 	public void Error_ToString_ShouldReturnErrorMessage()
