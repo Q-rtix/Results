@@ -1,0 +1,139 @@
+using Results.ResultTypes;
+// ReSharper disable InconsistentNaming
+
+namespace Results.Extensions;
+
+/// <summary>
+/// Provides extension methods for logical "and" operations on <see cref="Result"/> and <see cref="Result{TValue}"/> objects.
+/// </summary>
+public static class LogicalAndOperationResultExtensions
+{
+	/// <summary>
+	/// Combines this result with another result of a different type using a logical AND operation.
+	/// </summary>
+	/// <param name="self">The first result to combine.</param>
+	/// <param name="result">The other result to combine with this result.</param>
+	/// <returns>A new instance of <see cref="Result"/> representing a successful result if both results are successful;
+	/// otherwise, returns a new instance representing an error result with the error value from this result.</returns>
+	/// <remarks>
+	///		<code>
+	///			Result x = new Ok();
+	///			Result y = new Error("late error");
+	///			Assert.Equal(x.And(y), new Error("late error"));
+	/// 
+	///			Result x = new Ok();
+	///			Result y = new Ok();
+	///			Assert.Equal(x.And(y), new Ok());
+	///
+	/// 
+	///			Result x = new Error("early error");
+	///			Result y = new Error("late error");
+	///			Assert.Equal(x.And(y), new Error("early error"));
+	/// 
+	///			Result x = new Error("early error");
+	///			Result y = new Ok();
+	///			Assert.Equal(x.And(y), new Error("early error"));
+	///		</code>
+	/// </remarks>
+	public static Result And(this Result self, Result result)
+		=> self.IsSucceed
+			? result
+			: new Error(self.Errors);
+
+	/// <summary>
+	/// Combines this result with another result of a different type using a logical AND operation.
+	/// </summary>
+	/// <typeparam name="T">The type of the value associated with this result.</typeparam>
+	/// <param name="self">The first result to combine.</param>
+	/// <param name="result">The other result to combine with this result.</param>
+	/// <returns>A new instance of <see cref="Result"/> representing a successful result if both results are successful;
+	/// otherwise, returns a new instance representing an error result with the error value from this result.</returns>
+	/// <remarks>
+	///		<code>
+	///			Result&lt;int&gt; x = new Ok(2);
+	///			Result y = new Error("late error");
+	///			Assert.Equal(x.And(y), new Error("late error"));
+	///
+	/// 
+	///			Result&lt;int&gt; x = new Ok(2);
+	///			Result y = new Ok();
+	///			Assert.Equal(x.And(y), new Ok());
+	/// 
+	///			Result&lt;int&gt; x = new Error("early error");
+	///			Result y = new Error("late error");
+	///			Assert.Equal(x.And(y), new Error("early error"));
+	///	
+	///			Result&lt;int&gt; x = new Error("early error");
+	///			Result y = new Ok();
+	///			Assert.Equal(x.And(y), new Error("early error"));
+	///		</code>
+	/// </remarks>
+	public static Result And<T>(this Result<T> self, Result result)
+		=> self.IsSucceed
+			? result
+			: new Error(self.Errors);
+
+	/// <summary>
+	/// Combines this result with another result of a different type using a logical AND operation.
+	/// </summary>
+	/// <param name="self">The first result to combine.</param>
+	/// <param name="result">The other result to combine with this result.</param>
+	/// <returns>A new instance of <see cref="Result"/> representing a successful result if both results are successful;
+	/// otherwise, returns a new instance representing an error result with the error value from this result.</returns>
+	/// <remarks>
+	///		<code>
+	///			Result x = new Ok();
+	///			Result&lt;int&gt; y = new Error("late error");
+	///			Assert.Equal(x.And(y), new Error("late error"));
+	///
+	/// 
+	///			Result x = new Ok();
+	///			Result&lt;int&gt; y = new Ok(3);
+	///			Assert.Equal(x.And(y), new Ok(3));
+	/// 
+	///			Result x = new Error("early error");
+	///			Result&lt;int&gt; y = new Error("late error");
+	///			Assert.Equal(x.And(y), new Error("early error"));
+	///	
+	///			Result x = new Error("early error");
+	///			Result&lt;int&gt; y = new Ok(3);
+	///			Assert.Equal(x.And(y), new Error("early error"));
+	///		</code>
+	/// </remarks>
+	public static Result<T> And<T>(this Result self, Result<T> result)
+		=> self.IsSucceed
+			? result
+			: new Error(self.Errors);
+
+	/// <summary>
+	/// Combines this result with another result of a different type using a logical AND operation.
+	/// </summary>
+	/// <param name="self">The first result to combine.</param>
+	/// <param name="result">The other result to combine with this result.</param>
+	/// <returns>A new instance of <see cref="Result"/> representing a successful result if both results are successful;
+	/// otherwise, returns a new instance representing an error result with the error value from this result.</returns>
+	/// <remarks>
+	///		<code>
+	///			Result&lt;int&gt; x = new Ok(2);
+	///			Result&lt;int&gt; y = new Error("late error");
+	///			Assert.Equal(x.And(y), new Error("late error"));
+	///
+	/// 
+	///			Result&lt;int&gt; x = new Ok(2);
+	///			Result&lt;int&gt; y = new Ok(3);
+	///			Assert.Equal(x.And(y), new Ok(3));
+	/// 
+	///			Result&lt;int&gt; x = new Error("early error");
+	///			Result&lt;int&gt; y = new Error("late error");
+	///			Assert.Equal(x.And(y), new Error("early error"));
+	///	
+	///			Result&lt;int&gt; x = new Error("early error");
+	///			Result&lt;int&gt; y = new Ok(3);
+	///			Assert.Equal(x.And(y), new Error("early error"));
+	///		</code>
+	/// </remarks>
+	public static Result<U> And<T, U>(this Result<T> self, Result<U> result)
+		=> self.IsSucceed
+			? result
+			: new Error(self.Errors);
+}
