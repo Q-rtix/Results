@@ -4,12 +4,12 @@ using Results.ResultTypes;
 namespace Results.Extensions;
 
 /// <summary>
-/// Provides extension methods for logical "and" operations on <see cref="Result"/> and <see cref="Result{TValue}"/> objects.
+/// Extensions for performing logical AND operations on <see cref="Result"/> and <see cref="Result{TValue}"/> objects.
 /// </summary>
 public static class LogicalAndOperationResultExtensions
 {
 	/// <summary>
-	/// Combines this result with another result of a different type using a logical AND operation.
+	/// Performs a logical AND operation between two <see cref="Result"/> objects.
 	/// </summary>
 	/// <param name="self">The first result to combine.</param>
 	/// <param name="result">The other result to combine with this result.</param>
@@ -41,7 +41,7 @@ public static class LogicalAndOperationResultExtensions
 			: new Error(self.Errors);
 
 	/// <summary>
-	/// Combines this result with another result of a different type using a logical AND operation.
+	/// Performs a logical AND operation between <see cref="Result{TValue}"/> and <see cref="Result"/> objects.
 	/// </summary>
 	/// <typeparam name="T">The type of the value associated with this result.</typeparam>
 	/// <param name="self">The first result to combine.</param>
@@ -74,8 +74,9 @@ public static class LogicalAndOperationResultExtensions
 			: new Error(self.Errors);
 
 	/// <summary>
-	/// Combines this result with another result of a different type using a logical AND operation.
+	/// Performs a logical AND operation between <see cref="Result"/> and <see cref="Result{TValue}"/> objects.
 	/// </summary>
+	/// <typeparam name="T">The type of the value associated with the result received as parameter.</typeparam>
 	/// <param name="self">The first result to combine.</param>
 	/// <param name="result">The other result to combine with this result.</param>
 	/// <returns>A new instance of <see cref="Result"/> representing a successful result if both results are successful;
@@ -106,8 +107,10 @@ public static class LogicalAndOperationResultExtensions
 			: new Error(self.Errors);
 
 	/// <summary>
-	/// Combines this result with another result of a different type using a logical AND operation.
+	/// Performs a logical AND operation between two <see cref="Result{TValue}"/> objects.
 	/// </summary>
+	/// <typeparam name="T">The type of the value associated with this result.</typeparam>
+	/// <typeparam name="U">The type of the value associated with the result received as parameter.</typeparam>
 	/// <param name="self">The first result to combine.</param>
 	/// <param name="result">The other result to combine with this result.</param>
 	/// <returns>A new instance of <see cref="Result"/> representing a successful result if both results are successful;
