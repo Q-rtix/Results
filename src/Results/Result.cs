@@ -130,5 +130,5 @@ public class Result
 	/// </remarks>
 	public Type ResultType => result.GetType();
 
-	public override string ToString() => result.ToString();
+	public override string ToString() => $"{(IsSucceed ? "Ok:" : "Error:")} {result}";
 }

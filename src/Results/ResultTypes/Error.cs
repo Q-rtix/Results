@@ -25,5 +25,5 @@ public class Error : ResultType
     /// <summary>
     ///     Provides a string representation of the Error object.
     /// </summary>
-    public override string ToString() => $"Error Result: {string.Join(", ", Errors.Select(err => err.ToString()))}";
+    public override string ToString() => $"{string.Join(", ", Errors.Select(err => err.ToString()))}";
 }

@@ -42,6 +42,6 @@ public class GenericOkTests
         var okResult = new Ok<string>(value);
         
         // Assert
-        Assert.Equal($"Ok Result: {value}", okResult.ToString());
+        Assert.Equal($"{value}", okResult.ToString());
     }
 }

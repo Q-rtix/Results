@@ -23,5 +23,5 @@ public class Ok<TValue> : Ok
     ///     Returns a string that represents the current object.
     /// </summary>
     /// <returns>A string that represents the current object.</returns>
-    public override string ToString() => $"Ok Result: {Value?.ToString() ?? string.Empty}";
+    public override string ToString() => $"{Value?.ToString() ?? string.Empty}";
 }

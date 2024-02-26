@@ -16,7 +16,7 @@ public class ResultTests
 		// Assert
 		Assert.True(result.IsFaulted);
 		Assert.False(result.IsSucceed);
-		Assert.Equal(typeof(Error), result.GetType());
+		Assert.Equal(typeof(Error), result.ResultType);
 		Assert.Equal([error], result.Errors);
 	}
 	
@@ -27,7 +27,7 @@ public class ResultTests
 		Result result = new Ok();
 		
 		// Assert
-		Assert.Equal(typeof(Ok), result.GetType());
+		Assert.Equal(typeof(Ok), result.ResultType);
 		Assert.True(result.IsSucceed);
 		Assert.False(result.IsFaulted);
 	}

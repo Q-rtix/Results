@@ -51,7 +51,7 @@ public class Result<TValue> : Result
 	/// otherwise, the default value of type <typeparamref name="TValue"/>.
 	/// </returns>
 	public TValue? GetValueOrDefault() => IsSucceed
-		? Ok()!.Value
+		? Value
 		: default;
 
 	/// <summary>
@@ -61,8 +61,18 @@ public class Result<TValue> : Result
 	/// <param name="defaultValue">The default value to return if the result is not successful.</param>
 	/// <returns>The unwrapped value if the result is successful, otherwise the specified default value.</returns>
 	public TValue GetValueOr(TValue defaultValue) => IsSucceed
-		? Ok()!.Value
+		? Value
 		: defaultValue;
+
+	/// <summary>
+	/// Retrieves the value of the result if the operation succeeded, or the result of a function if the operation failed.
+	/// </summary>
+	/// <typeparam name="TValue">The type of the value contained in the result.</typeparam>
+	/// <param name="function">The function to be executed if the operation failed.</param>
+	/// <returns>The value of the result if the operation succeeded, or the result of the function if the operation failed.</returns>
+	public TValue GetValueOrElse(Func<Error, TValue> function) => IsSucceed
+		? Value
+		: function(Error()!);
 
 
 	/// <summary>

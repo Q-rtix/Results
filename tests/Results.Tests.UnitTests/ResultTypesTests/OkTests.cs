@@ -21,6 +21,6 @@ public class OkTests
 		var result = new Ok();
 		
 		// Assert
-		Assert.Equal("Ok Result", result.ToString());
+		Assert.Equal(string.Empty, result.ToString());
 	}
 }

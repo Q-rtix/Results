@@ -54,6 +54,6 @@ public class ErrorTests
 		// Act
 		var result = errorInstance.ToString();
 		// Assert
-		Assert.Equal($"Error Result: {string.Join(", ", expectedErrors.Select(err => err.ToString()))}", result);
+		Assert.Equal($"{string.Join(", ", expectedErrors.Select(err => err.ToString()))}", result);
 	}
 }
