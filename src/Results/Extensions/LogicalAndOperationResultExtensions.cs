@@ -38,7 +38,7 @@ public static class LogicalAndOperationResultExtensions
 	public static Result And(this Result self, Result result)
 		=> self.IsSucceed
 			? result
-			: new Error(self.Errors);
+			: self;
 
 	/// <summary>
 	/// Performs a logical AND operation between <see cref="Result{TValue}"/> and <see cref="Result"/> objects.

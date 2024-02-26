@@ -41,7 +41,7 @@ public static class LogicalOrOperationExtensions
 	public static Result Or(this Result self, Result result)
 		=> self.IsFaulted
 			? result
-			: new Ok();
+			: self;
 
 	/// <summary>
 	/// Performs a logical OR operation between <see cref="Result{TValue}"/> and <see cref="Result"/> objects.
@@ -113,5 +113,5 @@ public static class LogicalOrOperationExtensions
 	public static Result<T> Or<T>(this Result<T> self, Result<T> result)
 		=> self.IsFaulted
 			? result
-			: new Ok<T>(self.Value);
+			: self;
 }
