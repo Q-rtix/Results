@@ -1,6 +1,5 @@
 using Results.ResultTypes;
 using Results.WellKnownErrors;
-using Results.WellKnownErrors.Extensions;
 
 namespace Results;
 
@@ -12,9 +11,21 @@ public class Result
 	protected readonly ResultType result;
 
 	/// <summary>
-	///     Create a new instance of <see cref="Result"/>.
+	///     Create a new instance of <see cref="Result" />.
 	/// </summary>
 	public Result(ResultType result) => this.result = result;
+
+	/// <summary>
+	///     Gets or sets the status code.
+	/// </summary>
+	/// <value>
+	///     The status code, or null if no status code has been set.
+	/// </value>
+	/// <remarks>
+	///     This status code is versatile, having applicability as both an internal status marker within the application, or
+	///     externally as an HTTP status code when interacting over HTTP protocols.
+	/// </remarks>
+	public int? StatusCode { get; set; }
 
 	/// <summary>
 	///     Gets a boolean value which represents the status of the operation.
@@ -42,7 +53,17 @@ public class Result
 	/// </exception>
 	public object[] Errors => IsFaulted
 		? Error()!.Errors
-		: throw new InvalidOperationException(WellKnownError.OperationSucceed.Description());
+		: throw new InvalidOperationException(WellKnownError.OperationSucceed);
+
+	/// <summary>
+	///     Gets the type of the result contained in the Result object.
+	/// </summary>
+	/// <returns>The type of the result.</returns>
+	/// <remarks>
+	///     The Result object represents the result of an operation that can either succeed or fail.
+	///     This method retrieves the type of the result stored within the Result object.
+	/// </remarks>
+	public Type ResultType => result.GetType();
 
 
 	/// <summary>
@@ -119,16 +140,6 @@ public class Result
 
 	public static implicit operator Result(Ok ok) => new(ok);
 	public static implicit operator Result(Error error) => new(error);
-
-	/// <summary>
-	///     Gets the type of the result contained in the Result object.
-	/// </summary>
-	/// <returns>The type of the result.</returns>
-	/// <remarks>
-	///     The Result object represents the result of an operation that can either succeed or fail.
-	///     This method retrieves the type of the result stored within the Result object.
-	/// </remarks>
-	public Type ResultType => result.GetType();
 
 	public override string ToString() => $"{(IsSucceed ? "Ok:" : "Error:")} {result}";
 }

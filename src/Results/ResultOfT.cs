@@ -1,6 +1,5 @@
 using Results.ResultTypes;
 using Results.WellKnownErrors;
-using Results.WellKnownErrors.Extensions;
 
 namespace Results;
 
@@ -40,7 +39,7 @@ public class Result<TValue> : Result
 	/// </exception>
 	public TValue Value => IsSucceed
 		? Ok()!.Value
-		: throw new InvalidOperationException(WellKnownError.OperationFailed.Description());
+		: throw new InvalidOperationException(WellKnownError.OperationFailed);
 
 	/// <summary>
 	/// Retrieves the value contained in a successful result or returns the default value.

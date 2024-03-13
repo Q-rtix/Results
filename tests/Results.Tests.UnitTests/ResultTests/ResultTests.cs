@@ -111,6 +111,34 @@ public class ResultTests
 		// Assert
 		Assert.Null(errors);
 	}
+
+	[Fact]
+	public void Result_GetErrorsOr_WhenResultIsFaulted_ReturnErrors()
+	{
+		// Arrange
+		Result result = new Error("Error message");
+		
+		// Act
+		var errors = result.GetErrorsOr();
+		
+		// Assert
+		Assert.NotNull(errors);
+		Assert.Equal(["Error message"], errors);	
+	}
+	
+	[Fact]
+	public void Result_GetErrorsOr_WhenResultIsSucceed_ReturnsValues()
+	{
+		// Arrange
+		Result result = new Ok();
+		
+		// Act
+		var errors = result.GetErrorsOr("Message if succeed");
+		
+		// Assert
+		Assert.NotNull(errors);
+		Assert.Equal(["Message if succeed"], errors);	
+	}
 	
 	[Fact]
 	public void Result_GetErrors_WhenResultIsFaulted_ReturnsErrors()
@@ -125,6 +153,106 @@ public class ResultTests
 		Assert.Equal(["Error message"], errors);
 	}
 	
+	[Fact]
+	public void Result_OnFail_DoesNotExecuteFunction_WhenResultIsSuccess()
+	{
+		// Arrange
+		Result result = new Ok();  
+
+		// Act
+		var output = result.OnFail(e => "Function was executed");
+
+		// Assert
+		Assert.Null(output); 
+	}
+	
+	[Fact]
+	public void Result_OnFail_TestFunctionRuns_WhenIsFaulted()
+	{
+		// Arrange
+		Result result = new Error("Some error");
+
+		// Act
+		var output = result.OnFail(e => "Function was executed");
+
+		// Assert
+		Assert.Equal("Function was executed", output);
+	}
+
+	[Fact]
+	public void Result_OnSuccess_TestFunctionRuns_WhenResultIsSucceed()
+	{
+		// Arrange
+		Result result = new Ok();
+		
+		// Act
+		var output = result.OnSuccess(() => "Function was executed");
+		
+		// Assert
+		Assert.Equal("Function was executed", output);
+	}
+	
+	[Fact]
+	public void Result_OnSuccess_DoesNotExecuteFunction_WhenResultIsFaulted()
+	{
+		// Arrange
+		Result result = new Error("Some error");
+		
+		// Act
+		var output = result.OnSuccess(() => "Function was executed");
+		
+		// Assert
+		Assert.Null(output);
+	}
+
+	[Fact]
+	public void Result_InspectError_TestActionRuns_WhenResultIsFaulted()
+	{
+		// Arrange
+		Result result = new Error("Some error");
+		
+		// Act & Assert
+		var exception = Assert.Throws<Exception>(() => result.InspectError(e => throw new Exception("Function was executed")));
+		Assert.Equal("Function was executed", exception.Message);
+	}
+
+	[Fact]
+	public void Result_InspectError_DoesNotExecuteAction_WhenResultIsSucceed()
+	{
+		// Arrange
+		Result result = new Ok();
+		
+		// Act & Assert
+		result.InspectError(e => throw new Exception("Function was executed"));
+	}
+	
+	[Fact]
+	public void Result_Match_TestSuccessFunctionRuns_WhenResultIsSucceed()
+	{
+		// Arrange
+		Result result = new Ok();
+		
+		// Act
+		var output = result.Match(() => "Success function was executed", e => "Error function was executed");
+		
+		// Assert
+		Assert.Equal("Success function was executed", output);
+	}
+
+	[Fact]
+	public void Result_Match_TesFailureFunctionRuns_WhenResultIsFaulted()
+	{
+		// Arrange
+		Result result = new Error("Some error");
+
+		// Act
+		var output = result.Match(() => "Success function was executed", e => "Error function was executed");
+
+		// Assert
+		Assert.Equal("Error function was executed", output);
+	}
+
+
 	[Fact]
 	public void Result_GetResultType_WhenResultTypeIsOk_ReturnsOkType()
 	{

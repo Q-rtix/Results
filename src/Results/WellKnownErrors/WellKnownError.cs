@@ -2,11 +2,11 @@ using System.ComponentModel;
 
 namespace Results.WellKnownErrors;
 
-internal enum WellKnownError
+internal static class WellKnownError
 {
-	[Description("The operation could be completed successfully. Result object contains only data; Expected 'Errors' are missing.")]
-	OperationSucceed,
-	
-	[Description("The operation could not be completed successfully. Result object contains only error data; Expected 'Value' is missing.")]
-	OperationFailed,
+	public const string OperationSucceed =
+		"The operation could be completed successfully. Result object contains only data; Expected 'Errors' are missing.";
+
+	public const string OperationFailed =
+		"The operation could be completed successfully. Result object contains only data; Expected 'Errors' are missing.";
 }
