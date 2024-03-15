@@ -2,10 +2,10 @@ using Results.ResultTypes;
 
 namespace Results.Tests.UnitTests.ResultTests;
 
-public class GenericResultTests
+public class ResultOfTTests
 {
 	[Fact]
-	public void GenericResult_ImplicitOperator_WhenResultIsError()
+	public void ResultOfT_ImplicitOperator_WhenResultIsError()
 	{
 		// Arrange
 		const string error = "Test exception";
@@ -21,7 +21,7 @@ public class GenericResultTests
 	}
 
 	[Fact]
-	public void GenericResult_ImplicitOperator_WhenResultIsOk()
+	public void ResultOfT_ImplicitOperator_WhenResultIsOk()
 	{
 		// Act
 		Result<int> result = new Ok<int>(2);
@@ -33,7 +33,7 @@ public class GenericResultTests
 	}
 
 	[Fact]
-	public void GenericResult_Constructor_WhenResultTypeIsOk_CreatesInstanceWithExpectedValues()
+	public void ResultOfT_Constructor_WhenResultTypeIsOk_CreatesInstanceWithExpectedValues()
 	{
 		// Arrange
 		const string value = "successful value";
@@ -47,7 +47,7 @@ public class GenericResultTests
 	}
 
 	[Fact]
-	public void GenericResult_Constructor_WhenResultTypeIsError_CreatesInstanceWithExpectedError()
+	public void ResultOfT_Constructor_WhenResultTypeIsError_CreatesInstanceWithExpectedError()
 	{
 		// Arrange
 		var errors = new List<object> { "error 1", "error 2" };
@@ -61,7 +61,7 @@ public class GenericResultTests
 	}
 
 	[Fact]
-	public void GenericResult_Ok_WhenCalled_ReturnsResultWithOkResultType()
+	public void ResultOfT_Ok_WhenCalled_ReturnsResultWithOkResultType()
 	{
 		// Arrange
 		const string value = "successful value";
@@ -74,7 +74,7 @@ public class GenericResultTests
 	}
 
 	[Fact]
-	public void GenericResult_Error_WhenCalled_ReturnsResultWithErrorResultType()
+	public void ResultOfT_Error_WhenCalled_ReturnsResultWithErrorResultType()
 	{
 		// Arrange
 		var errors = new List<object> { "error 1", "error 2" };
@@ -85,7 +85,7 @@ public class GenericResultTests
 	}
 
 	[Fact]
-	public void GenericResult_Value_WhenResultTypeIsOk_ReturnsExpectedValue()
+	public void ResultOfT_Value_WhenResultTypeIsOk_ReturnsExpectedValue()
 	{
 		// Arrange
 		const string value = "successful value";
@@ -99,7 +99,7 @@ public class GenericResultTests
 	}
 
 	[Fact]
-	public void GenericResult_Value_WhenResultTypeIsError_ThrowsInvalidOperationException()
+	public void ResultOfT_Value_WhenResultTypeIsError_ThrowsInvalidOperationException()
 	{
 		// Arrange
 		var errors = new List<object> { "error 1", "error 2" };
@@ -110,7 +110,7 @@ public class GenericResultTests
 	}
 
 	[Fact]
-	public void GenericResult_GetValueOrDefault_WhenResultTypeIsOk_ReturnsExpectedValue()
+	public void ResultOfT_GetValueOrDefault_WhenResultTypeIsOk_ReturnsExpectedValue()
 	{
 		// Arrange
 		const string value = "successful value";
@@ -124,7 +124,7 @@ public class GenericResultTests
 	}
 
 	[Fact]
-	public void GenericResult_GetValueOrDefault_WhenResultTypeIsError_ReturnsDefaultValue()
+	public void ResultOfT_GetValueOrDefault_WhenResultTypeIsError_ReturnsDefaultValue()
 	{
 		// Arrange
 		var errors = new List<object> { "error 1", "error 2" };
@@ -138,7 +138,7 @@ public class GenericResultTests
 	}
 
 	[Fact]
-	public void GenericResult_GetValueOr_WhenResultTypeIsOk_ReturnsExpectedValue()
+	public void ResultOfT_GetValueOr_WhenResultTypeIsOk_ReturnsExpectedValue()
 	{
 		// Arrange
 		const string value = "successful value";
@@ -152,7 +152,7 @@ public class GenericResultTests
 	}
 
 	[Fact]
-	public void GenericResult_GetValueOr_WhenResultTypeIsError_ReturnsDefaultValue()
+	public void ResultOfT_GetValueOr_WhenResultTypeIsError_ReturnsDefaultValue()
 	{
 		// Arrange
 		var errors = new List<object> { "error 1", "error 2" };
@@ -166,7 +166,7 @@ public class GenericResultTests
 	}
 
 	[Fact]
-	public void GenericResult_GetValueOrElse_WhenResultTypeIsOk_ReturnsExpectedValue()
+	public void ResultOfT_GetValueOrElse_WhenResultTypeIsOk_ReturnsExpectedValue()
 	{
 		// Arrange
 		const string value = "successful value";
@@ -180,7 +180,7 @@ public class GenericResultTests
 	}
 
 	[Fact]
-	public void GenericResult_GetValueOrElse_WhenResultTypeIsError_ReturnsExpectedValue()
+	public void ResultOfT_GetValueOrElse_WhenResultTypeIsError_ReturnsExpectedValue()
 	{
 		// Arrange
 		var errors = new List<object> { "error 1", "error 2" };
@@ -195,7 +195,7 @@ public class GenericResultTests
 	}
 
 	[Fact]
-	public void GenericResult_Match_WhenResultTypeIsOk_CallsSuccessFunction()
+	public void ResultOfT_Match_WhenResultTypeIsOk_CallsSuccessFunction()
 	{
 		// Arrange
 		const string value = "successful value";
@@ -210,7 +210,7 @@ public class GenericResultTests
 	}
 
 	[Fact]
-	public void GenericResult_Match_WhenResultTypeIsError_CallsFailFunction()
+	public void ResultOfT_Match_WhenResultTypeIsError_CallsFailFunction()
 	{
 		// Arrange
 		var errors = new List<object> { "error 1", "error 2" };
@@ -224,4 +224,71 @@ public class GenericResultTests
 		// Assert
 		Assert.Equal(errors, resultValue);
 	}
+
+	[Fact]
+	public void ResultOfT_OnSuccess_WhenResultTypeIsOk_CallsSuccessFunction()
+	{
+		// Arrange
+		Result<int> result = new Ok<int>(5);
+		
+		// Act
+		var resultValue = result.OnSuccess(x => x + 1);
+		
+		// Assert
+		Assert.Equal(6, resultValue);
+	}
+	
+	[Fact]
+	public void ResultOfT_OnSuccess_WhenResultTypeIsError_ReturnsDefaultValue()
+	{
+		// Arrange
+		Result<int> result = new Error(new List<object> { "error 1", "error 2" });
+		
+		// Act
+		var resultValue = result.OnSuccess(x => x + 1);
+		
+		// Assert
+		Assert.Equal(default, resultValue);
+	}
+
+	[Fact]
+	public void ResultOfT_Inspect_WhenResultTypeIsOk_CallsSuccessFunction()
+	{
+		// Arrange
+		Result<int> result = new Ok<int>(5);
+		
+		// Act & Assert
+		result.Inspect(x => Assert.Equal(5, x));
+	}
+
+	[Fact]
+	public void ResultOfT_Inspect_WhenResultTypeIsError_DoesNotCallSuccessFunction()
+	{
+		// Arrange
+		Result<int> result = new Error(new List<object> { "error 1", "error 2" });
+		
+		// Act & Assert
+		result.Inspect(x => throw new Exception("Inspect should not call fail function"));
+	}
+
+	[Fact]
+	public void ResultOfT_InspectError_WhenResultTypeIsOk_DoesNotCallFailFunction()
+	{
+		// Arrange
+		Result<int> result = new Ok<int>(5);
+		
+		// Act & Assert
+		result.InspectError(x => throw new Exception("InspectError should not call success function"));
+	}
+
+	[Fact]
+	public void ResultOfT_InspectError_WhenResultTypeIsError_CallsFailFunction()
+	{
+		// Arrange
+		Result<int> result = new Error(new List<object> { "error 1", "error 2" });
+		
+		// Act & Assert
+		result.InspectError(x => Assert.Equal("error 1", x.Errors[0]));
+	}
+	
 }
