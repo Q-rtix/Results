@@ -3,7 +3,7 @@
 ![NuGet Version](https://img.shields.io/nuget/v/Qrtix.Results)
 
 This C# library provides functionality for implementing paged lists.
-Consult the online [documentation](https://qrtix769.github.io/Results/) for more details.
+Consult the online [documentation](https://q-rtix.github.io/Results/) for more details.
 
 - [Getting Started](#getting-started)
 - [Contributing](#contributing)
@@ -33,9 +33,9 @@ dotnet add package Qrtix.Results
 **Did you find a bug?**
 
 - Ensure the bug was not already reported by searching on GitHub
-  under [Issues](https://github.com/Qrtix769/Results/issues).
+  under [Issues](https://github.com/Q-rtix/Results/issues).
 - If you're unable to find an open issue addressing the
-  problem, [open a new one](https://github.com/Qrtix769/Results/issues/new). Be sure to include a title and clear
+  problem, [open a new one](https://github.com/Q-rtix/Results/issues/new). Be sure to include a title and clear
   description, as much relevant information as possible, and a code sample or an executable test case demonstrating the
   expected behavior that is not occurring.
 
@@ -46,7 +46,7 @@ dotnet add package Qrtix.Results
 
 **Do you intend to add a new feature or change an existing one?**
 
-- First suggest your change in the [Results ideas page](https://github.com/Qrtix769/Results/discussions/categories/ideas)
+- First suggest your change in the [Results ideas page](https://github.com/Q-rtix/Results/discussions/categories/ideas)
   for discussion.
 - There are no fixed rules on what should and shouldn't be in this library, but some features are more valuable than
   others, and some require long-term maintenance that outweighs the value of the feature. So please get sign-off from
@@ -56,5 +56,5 @@ dotnet add package Qrtix.Results
 **Do you have questions about the source code?**
 
 - Ask any question about how to use Results in
-  the [Results discussion page](https://github.com/Qrtix769/Results/discussions/new?category=q-a).
+  the [Results discussion page](https://github.com/Q-rtix/Results/discussions/new?category=q-a).
 
