@@ -1,34 +1,4 @@
-# Result Library
-
-![NuGet Version](https://img.shields.io/nuget/v/Qrtix.Results)
-
-This C# library provides functionality for implementing paged lists.
-Consult the online [documentation](https://qrtix769.github.io/Results/) for more details.
-
-- [Getting Started](#getting-started)
-- [Contributing](#contributing)
-
-## Getting Started
-
-To install **Qrtix.Results**, you can use NuGet Package Manager in Visual Studio or the .NET CLI.
-
-### NuGet Package Manager
-
-1. Open your project in Visual Studio.
-2. Right-click on your project in Solution Explorer.
-3. Select "Manage NuGet Packages..."
-4. Search for "Qrtix.Results" in the NuGet Package Manager.
-5. Click on "Install" to add the package to your project.
-
-### .NET CLI
-
-You can also install **Qrtix.Results** using the .NET CLI:
-
-```sh
-dotnet add package Qrtix.Results
-```
-
-## Contributing
+# Contributing
 
 **Did you find a bug?**
 
@@ -57,4 +27,3 @@ dotnet add package Qrtix.Results
 
 - Ask any question about how to use Results in
   the [Results discussion page](https://github.com/Qrtix769/Results/discussions/new?category=q-a).
-

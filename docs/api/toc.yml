@@ -13,8 +13,8 @@
   - name: Classes
   - name: CheckResultExtensions
     href: Results.Extensions.CheckResultExtensions.md
-  - name: FattenResultExtensions
-    href: Results.Extensions.FattenResultExtensions.md
+  - name: FlattenResultExtensions
+    href: Results.Extensions.FlattenResultExtensions.md
   - name: LogicalAndOperationResultExtensions
     href: Results.Extensions.LogicalAndOperationResultExtensions.md
   - name: LogicalOrOperationExtensions

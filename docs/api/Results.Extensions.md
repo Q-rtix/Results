@@ -6,7 +6,7 @@
 
 Provides extension methods for the Check Result operations.
 
- [FattenResultExtensions](Results.Extensions.FattenResultExtensions.md)
+ [FlattenResultExtensions](Results.Extensions.FlattenResultExtensions.md)
 
 Extensions for flattening Result objects.
 

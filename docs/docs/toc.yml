@@ -12,3 +12,5 @@
     href: advanced-tutorials.md
   - name: Integration with ASP.NET Core
     href: integration-aspnetcore.md
+- name: Contributing
+  href: contributing.md
