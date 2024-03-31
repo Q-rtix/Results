@@ -1,0 +1,37 @@
+### YamlMime:TableOfContent
+- name: Results
+  href: Results.md
+  items:
+  - name: Classes
+  - name: Result
+    href: Results.Result.md
+  - name: Result<TValue>
+    href: Results.Result-1.md
+- name: Results.Extensions
+  href: Results.Extensions.md
+  items:
+  - name: Classes
+  - name: CheckResultExtensions
+    href: Results.Extensions.CheckResultExtensions.md
+  - name: FattenResultExtensions
+    href: Results.Extensions.FattenResultExtensions.md
+  - name: LogicalAndOperationResultExtensions
+    href: Results.Extensions.LogicalAndOperationResultExtensions.md
+  - name: LogicalOrOperationExtensions
+    href: Results.Extensions.LogicalOrOperationExtensions.md
+  - name: MapperResultExtensions
+    href: Results.Extensions.MapperResultExtensions.md
+  - name: MapperSuccessfulResultValueExtensions
+    href: Results.Extensions.MapperSuccessfulResultValueExtensions.md
+- name: Results.ResultTypes
+  href: Results.ResultTypes.md
+  items:
+  - name: Classes
+  - name: Error
+    href: Results.ResultTypes.Error.md
+  - name: Ok
+    href: Results.ResultTypes.Ok.md
+  - name: Ok<TValue>
+    href: Results.ResultTypes.Ok-1.md
+  - name: ResultType
+    href: Results.ResultTypes.ResultType.md

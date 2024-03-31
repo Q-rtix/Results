@@ -5,7 +5,7 @@ namespace Results.Extensions;
 /// <summary>
 /// Extensions for flattening Result objects.
 /// </summary>
-public static class FattenResultExtensions
+public static class FlattenResultExtensions
 {
 	/// <summary>
 	/// Flattens a nested result by returning the inner result if it is successful,
