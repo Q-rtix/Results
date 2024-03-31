@@ -20,7 +20,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Setup .NET
+      - name: Setting up .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
@@ -30,12 +30,12 @@ jobs:
             2.1.x
             2.0.x
 #          cache: true
-      - name: Restore dependencies
+      - name: Restoring dependencies
         run: dotnet restore
         working-directory: ${{ env.PATH_PROJECT }}
-      - name: Build
+      - name: Building the project
         run: dotnet build --no-restore --configuration Debug
         working-directory: ${{ env.PATH_PROJECT }}
-      - name: Run Paging Tests
+      - name: Running the Unit Tests
         run: dotnet test --verbosity normal
         working-directory: ${{ env.PATH_TEST }}

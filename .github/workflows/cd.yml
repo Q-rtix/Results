@@ -20,7 +20,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Setup .NET
+      - name: Setting up .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
@@ -30,16 +30,16 @@ jobs:
             2.1.x
             2.0.x
 #          cache: true
-      - name: Restore dependencies
+      - name: Restoring dependencies
         run: dotnet restore
         working-directory: ${{ env.PATH_PROJECT }}
-      - name: Build
+      - name: Building the project
         run: dotnet build --no-restore --configuration Release
         working-directory: ${{ env.PATH_PROJECT }}
-      - name: Create NuGet Package
+      - name: Creatnig NuGet Package
         run: dotnet pack ${{ env.PROJECT_NAME }} --no-build -c Release
         working-directory: ${{ env.PATH_PROJECT }}
-      - name: Upload artifact
+      - name: Uploading artifact
         uses: actions/upload-artifact@v3
         with:
           name: results-lib
@@ -50,21 +50,21 @@ jobs:
     runs-on: windows-latest
     needs: build
     steps:
-      - name: Download artifact
+      - name: Downloading artifact
         uses: actions/download-artifact@v3
         with:
           name: results-lib
-      - name: Test artifact download
+      - name: Testing artifact downloads
         run: ls -R
-      - name: Publish into NuGet
+      - name: Publishing into NuGet
         run: dotnet nuget push *.nupkg --skip-duplicate --api-key ${{ secrets.NUGET_TOKEN }} --source https://api.nuget.org/v3/index.json
         working-directory: ${{ env.PATH_RELEASE }}
-      - name: Publish into Github Packages
+      - name: Publishing into Github Packages
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: dotnet nuget push *.nupkg --skip-duplicate --api-key ${{ secrets.GH_TOKEN }} --source https://nuget.pkg.github.com/Qrtix769/index.json
         working-directory: ${{ env.PATH_RELEASE }}
-      - name: Create Release in Github
+      - name: Creating Release in Github
         env: 
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           REPO_NAME: ${{ github.event.repository.name }}
