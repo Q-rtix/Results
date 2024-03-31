@@ -16,7 +16,7 @@ env:
 
 jobs:
   build:
-    name: Build & Test Paging project
+    name: Build & Test project
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3

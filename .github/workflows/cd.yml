@@ -16,7 +16,7 @@ env:
 
 jobs:
   build:
-    name: Build Paging project
+    name: Build project
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
@@ -39,21 +39,21 @@ jobs:
       - name: Create NuGet Package
         run: dotnet pack ${{ env.PROJECT_NAME }} --no-build -c Release
         working-directory: ${{ env.PATH_PROJECT }}
-      - name: Upload Paging artifact
+      - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: paging-lib
+          name: results-lib
           path: .
 
   publish:
-    name: Publish Paging lib
+    name: Publish lib
     runs-on: windows-latest
     needs: build
     steps:
-      - name: Download Paging artifact
+      - name: Download artifact
         uses: actions/download-artifact@v3
         with:
-          name: paging-lib
+          name: results-lib
       - name: Test artifact download
         run: ls -R
       - name: Publish into NuGet
