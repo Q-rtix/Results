@@ -2,7 +2,7 @@
 
 ![NuGet Version](https://img.shields.io/nuget/v/Qrtix.Results)
 
-This C# library provides functionality for implementing paged lists.
+This C# library provides functionality for manage results.
 Consult the online [documentation](https://q-rtix.github.io/Results/) for more details.
 
 - [Getting Started](#getting-started)
