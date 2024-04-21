@@ -4,7 +4,8 @@ _layout: landing
 
 # Introduction
 
-![NuGet Version](https://img.shields.io/nuget/v/Qrtix.Results)
+![NuGet Version](https://img.shields.io/nuget/v/Qrtix.Results?logo=nuget)
+![GitHub Repo stars](https://img.shields.io/github/stars/Q-rtix/Results?style=flat&logo=github)
 
 **Qrtix.Results** is a powerful .NET library designed to handle the result of operations that can either succeed or fail. It
 offers a robust set of tools for managing operation results, handling errors, and performing various logical operations.
