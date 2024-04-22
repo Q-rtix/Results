@@ -18,11 +18,11 @@
 		<RepositoryUrl>https://github.com/Q-rtix/Results</RepositoryUrl>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>Results</Title>
-		<Version>1.0.2</Version>
+		<Version>1.0.3</Version>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryType>git</RepositoryType>
 		<PackageId>Qrtix.Results</PackageId>
-		<PackageReleaseNotes>Include XML comments</PackageReleaseNotes>
+		<PackageReleaseNotes>Imrpove docs</PackageReleaseNotes>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageTags>Result Results</PackageTags>
 		<Copyright>Copyright (c) Carlos J. Ortiz. All rights reserved.</Copyright>
