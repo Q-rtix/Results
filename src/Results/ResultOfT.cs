@@ -13,7 +13,14 @@ public class Result<TValue> : Result
 	/// Represents the result of an operation that can either succeed or fail.
 	/// </summary>
 	/// <typeparam name="TValue">The type of the value contained in a successful result.</typeparam>
-	public Result(ResultType result) : base(result)
+	/// <param name="innerResult">
+	/// The result of the operation.
+	/// </param>
+	/// <param name="statusCode">
+	/// The status code of the operation.
+	/// </param>
+	public Result(ResultType innerResult, int? statusCode = null) 
+		: base(innerResult, statusCode)
 	{
 	}
 
@@ -26,7 +33,7 @@ public class Result<TValue> : Result
 	/// <returns>
 	/// An instance of <see cref="Ok{TValue}"/>  representing the result of a successful operation; otherwise, null.
 	/// </returns>
-	public Ok<TValue>? Ok() => result as Ok<TValue>;
+	public Ok<TValue>? Ok() => InnerResult as Ok<TValue>;
 
 	/// <summary>
 	/// Retrieves the value contained in a successful result if the operation was successful, or throws an exception.

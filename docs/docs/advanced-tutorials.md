@@ -130,3 +130,44 @@ In this example, we demonstrate the usage of logical AND and OR operations with 
 
 1. **Logical AND Operation:** Combines two results, returning a success if both are successful, or an error if any of them fails.
 2. **Logical OR Operation:** Combines two results, returning a success if any of them is successful, or an error if both fail.
+
+## Ensure Result Value
+
+- Explore how to ensure the value of a Result object using `Ensure` method.
+- Demonstrate how to handle errors in a `Ensure` method.
+
+```csharp
+// Advanced Usage Tutorial: Step 3 - Ensure Value
+
+using Qrtix.Results;
+using Qrtix.Results.ResultTypes;
+using Qrtix.Results.Extensions;
+
+public class AdvancedUsageTutorialStep3
+{
+    // Step 3: Ensure Value
+
+    // Method to simulate a database query that might fail for invalid email
+    public Result<Email> CreateEmail(string email)
+       => ResultFactory.Create<string>(email)
+           .Ensure(email => !string.IsNullOrEmpty(email), "Email cannot be empty")
+           .Ensure(email => email.Contains("@"), "Invalid email address")
+           .Ensure(email => email.Split("@").Length == 2, "Invalid email address")
+           .Ensure(email => email.EndsWith(".com"), "Invalid email address")
+           .Map(email => new Email(email));
+
+    public void Run()
+    {
+        // Example 1: Ensure value with successful result
+        var result1 = CreateEmail("nWUeh@example.com");
+
+        // Example 2: Ensure value with failed result
+        var result2 = CreateEmail("");
+
+        // Displaying results
+        Console.WriteLine("Example 1: " + result1);
+        Console.WriteLine("Example 2: " + result2);
+    }
+}
+```
+

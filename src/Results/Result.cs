@@ -8,12 +8,15 @@ namespace Results;
 /// </summary>
 public class Result
 {
-	protected readonly ResultType result;
+	protected readonly ResultType InnerResult;
 
 	/// <summary>
 	///     Create a new instance of <see cref="Result" />.
 	/// </summary>
-	public Result(ResultType result) => this.result = result;
+	/// <param name="innerResult">The type of the result.</param>
+	/// <param name="statusCode">The status code.</param>
+	public Result(ResultType innerResult, int? statusCode = null) 
+		=> (InnerResult, StatusCode) = (innerResult, statusCode);
 
 	/// <summary>
 	///     Gets or sets the status code.
@@ -33,13 +36,13 @@ public class Result
 	/// <value>
 	///     <c>true</c> if the operation succeeded, otherwise <c>false</c>.
 	/// </value>
-	public bool IsSucceed => result.IsSucceed;
+	public bool IsSucceed => InnerResult.IsSucceed;
 
 	/// <summary>
 	///     Gets a value indicating whether the result is faulted.
 	/// </summary>
 	/// <value><c>true</c> if the result is faulted; otherwise, <c>false</c>.</value>
-	public bool IsFaulted => !result.IsSucceed;
+	public bool IsFaulted => !InnerResult.IsSucceed;
 
 	/// <summary>
 	///     Retrieves the errors of the operation if it was failure; otherwise, throws an exception.
@@ -63,7 +66,7 @@ public class Result
 	///     The Result object represents the result of an operation that can either succeed or fail.
 	///     This method retrieves the type of the result stored within the Result object.
 	/// </remarks>
-	public Type ResultType => result.GetType();
+	public Type ResultType => InnerResult.GetType();
 
 
 	/// <summary>
@@ -72,7 +75,7 @@ public class Result
 	/// <returns>
 	///     An instance of <see cref="Error" /> representing the error of an unsuccessful operation; otherwise, null.
 	/// </returns>
-	public Error? Error() => result as Error;
+	public Error? Error() => InnerResult as Error;
 
 	/// <summary>
 	///     Retrieves the error of the operation if it was failure; otherwise, returns the default value.
@@ -140,6 +143,6 @@ public class Result
 
 	public static implicit operator Result(Ok ok) => new(ok);
 	public static implicit operator Result(Error error) => new(error);
-
-	public override string ToString() => $"{(IsSucceed ? "Ok:" : "Error:")} {result}";
+	
+	public override string ToString() => $"{(IsSucceed ? "Ok:" : "Error:")} {InnerResult}";
 }
