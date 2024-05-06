@@ -45,6 +45,19 @@ public class ResultTests
     }
     
     [Fact]
+    public void Result_Constructor_WhenResultTypeIsOkAndStatusCode_CreatesInstanceWithoutValues()
+    {
+	    // Act
+	    var result = new Result(new Ok(), 200);
+
+	    // Assert
+	    Assert.Equal(typeof(Ok), result.ResultType);
+	    Assert.True(result.IsSucceed);
+	    Assert.False(result.IsFaulted);
+	    Assert.Equal(200, result.StatusCode);
+    }
+    
+    [Fact]
 	public void Result_Constructor_WhenResultTypeIsError_CreatesInstanceWithExpectedError()
 	{
 		// Act
@@ -55,6 +68,20 @@ public class ResultTests
 		Assert.False(result.IsSucceed);
 		Assert.True(result.IsFaulted);
 		Assert.Equal(["Error message"], result.Errors);
+	}
+	
+	[Fact]
+	public void Result_Constructor_WhenResultTypeIsErrorAndStatusCode_CreatesInstanceWithExpectedError()
+	{
+		// Act
+		var result = new Result(new Error("Error message"), 400);
+		
+		// Assert
+		Assert.Equal(typeof(Error), result.ResultType);
+		Assert.False(result.IsSucceed);
+		Assert.True(result.IsFaulted);
+		Assert.Equal(["Error message"], result.Errors);
+		Assert.Equal(400, result.StatusCode);
 	}
 	
 	[Fact]
@@ -69,7 +96,7 @@ public class ResultTests
 		Assert.True(result.IsFaulted);
 		Assert.Equal(["Error message 1", "Error message 2"], result.Errors);
 	}
-	
+
 	[Fact]
 	public void Result_Error_ReturnsErrorObject()
 	{
@@ -83,6 +110,19 @@ public class ResultTests
 		Assert.NotNull(error);
 		Assert.Equal(typeof(Error), error.GetType());
 		Assert.Equal(["Error message"], error.Errors);
+	}
+
+	[Fact]
+	public void Result_Error_ReturnsNull_WhenTheResultIsSucceed()
+	{
+		// Arrange
+		Result result = new Ok();
+		
+		// Act
+		var error = result.Error();
+		
+		// Assert
+		Assert.Null(error);
 	}
 	
 	[Fact]
