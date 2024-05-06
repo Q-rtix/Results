@@ -18,11 +18,13 @@
 		<RepositoryUrl>https://github.com/Q-rtix/Results</RepositoryUrl>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>Results</Title>
-		<Version>1.0.3</Version>
+		
+		<PackageId>Qrtix.Results</PackageId>
+		<Version>1.1.0</Version>
+		<PackageReleaseNotes>Add ensure extension methods and ResultFactory class</PackageReleaseNotes>
+		
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryType>git</RepositoryType>
-		<PackageId>Qrtix.Results</PackageId>
-		<PackageReleaseNotes>Imrpove docs</PackageReleaseNotes>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageTags>Result Results</PackageTags>
 		<Copyright>Copyright (c) Carlos J. Ortiz. All rights reserved.</Copyright>
