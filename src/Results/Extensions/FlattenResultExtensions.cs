@@ -3,7 +3,7 @@ using Results.ResultTypes;
 namespace Results.Extensions;
 
 /// <summary>
-/// Extensions for flattening Result objects.
+/// Extensions for flattening <see cref="Results.Result{TValue}"/> objects.
 /// </summary>
 public static class FlattenResultExtensions
 {

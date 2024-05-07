@@ -3,6 +3,9 @@ using Results.ResultTypes;
 
 namespace Results.Extensions;
 
+/// <summary>
+/// Extensions for performing logical AND operations on <see cref="Results.Result{TValue}"/> objects.
+/// </summary>
 public static class LogicalAndOperationResultExtensions
 {
 	/// <summary>

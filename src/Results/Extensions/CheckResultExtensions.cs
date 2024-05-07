@@ -3,7 +3,7 @@ using Results.ResultTypes;
 namespace Results.Extensions;
 
 /// <summary>
-/// Provides extension methods for the Check Result operations.
+/// Provides extension methods for the Check <see cref="Result{TValue}"/> operations.
 /// </summary>
 public static class CheckResultExtensions
 {
