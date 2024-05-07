@@ -3,7 +3,7 @@ namespace Results.ResultTypes;
 /// <summary>
 ///     Represents a result type indicating the success or failure of an operation.
 /// </summary>
-public abstract class ResultType
+public abstract record ResultType
 {
     /// <summary>
     ///     Represents a generic success result type.
