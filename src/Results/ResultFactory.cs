@@ -42,26 +42,11 @@ public static class ResultFactory
 	/// <summary>
 	/// Creates a new result instance representing a failure with the specified error and optional status code.
 	/// </summary>
-	/// <param name="error">The error associated with the failure.</param>
-	/// <param name="statusCode">The optional status code associated with the failure. Default is null.</param>
-	/// <returns>A new result instance representing a failure with the specified error and optional status code.</returns>
-	public static Result Failure(Error error, int? statusCode = null) => new(error, statusCode);
-	
-	/// <summary>
-	/// Creates a new result instance representing a failure with the specified error and optional status code.
-	/// </summary>
 	/// <typeparam name="T">The type of the result value.</typeparam>
 	/// <param name="error">The error associated with the failure.</param>
 	/// <param name="statusCode">The optional status code associated with the failure. Default is null.</param>
 	/// <returns>A new result instance representing a failure with the specified error and optional status code.</returns>
 	public static Result<T> Failure<T>(Error error, int? statusCode = null) => new(error, statusCode);
-	
-	/// <summary>
-	/// Creates a new result instance representing a failure with the specified error message(s).
-	/// </summary>
-	/// <param name="errors">The error message(s) or object(s) associated with the failure.</param>
-	/// <returns>A new result instance representing a failure with the specified error message(s).</returns>
-	public static Result Failure(params object[] errors) => new Error(errors);
 	
 	/// <summary>
 	/// Creates a new result instance representing a failure with the specified error message(s) or object(s).
@@ -70,13 +55,6 @@ public static class ResultFactory
 	/// <param name="errors">The error message(s) or object(s) associated with the failure.</param>
 	/// <returns>A new result instance representing a failure with the specified error message(s) or object(s).</returns>
 	public static Result<T> Failure<T>(params object[] errors) => new Error(errors);
-	
-	/// <summary>
-	/// Creates a new result instance representing a successful operation with an optional status code.
-	/// </summary>
-	/// <param name="statusCode">The optional status code associated with the successful operation. Default is null.</param>
-	/// <returns>A new result instance representing a successful operation with an optional status code.</returns>
-	public static Result Success(int? statusCode = null) => new(new Ok(), statusCode);
 	
 	/// <summary>
 	/// Creates a new result instance representing a successful operation with the specified value and optional status code.
