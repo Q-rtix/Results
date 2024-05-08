@@ -1,9 +1,9 @@
-using Results.ResultTypes;
+using static Results.ResultFactory;
 
 namespace Results.Extensions;
 
 /// <summary>
-/// Extensions for flattening <see cref="Results.Result{TValue}"/> objects.
+/// Extensions for flattening <see cref="Result{TValue}"/> objects.
 /// </summary>
 public static class FlattenResultExtensions
 {
@@ -20,5 +20,5 @@ public static class FlattenResultExtensions
 	public static Result<T> Flatten<T>(this Result<Result<T>> self)
 		=> self.IsSucceed
 			? self.Value
-			: new Error(self.Errors);
+			: Error<T>(self.Error()!, self.StatusCode);
 }

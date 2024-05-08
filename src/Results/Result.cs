@@ -237,7 +237,4 @@ public class Result<TValue>
 	}
 
 	public override string ToString() => $"{(IsSucceed ? "Ok:" : "Error:")} {_innerResult}";
-
-	public static implicit operator Result<TValue>(Ok<TValue> ok) => new(ok);
-	public static implicit operator Result<TValue>(Error error) => new(error);
 }

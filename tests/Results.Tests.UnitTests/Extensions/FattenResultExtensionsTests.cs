@@ -1,5 +1,5 @@
 using Results.Extensions;
-using Results.ResultTypes;
+using static Results.ResultFactory;
 
 namespace Results.Tests.UnitTests.Extensions;
 
@@ -10,7 +10,7 @@ public class FlattenResultExtensionsTests
 	{
 		// Arrange
 		const string expectedResult = "Hello, World!";
-		Result<Result<string>> nestedResult = new Ok<Result<string>>(new Ok<string>(expectedResult));
+		Result<Result<string>> nestedResult = Ok<Result<string>>(Ok<string>(expectedResult));
 
 		// Act
 		var actualResult = nestedResult.Flatten();
@@ -25,7 +25,7 @@ public class FlattenResultExtensionsTests
 	{
 		// Arrange
 		var outerResult = new object[] { "OuterError1", "OuterError2" };
-		Result<Result<string>> nestedResult = new Error(outerResult);
+		Result<Result<string>> nestedResult = Error<Result<string>>(outerResult);
 
 		// Act
 		var actualResult = nestedResult.Flatten();
@@ -40,7 +40,7 @@ public class FlattenResultExtensionsTests
 	{
 		// Arrange
 		var innerResult = new object[] { "InnerError1", "InnerError2" };
-		Result<Result<string>> nestedResult = new Ok<Result<string>>(new Error(innerResult));
+		Result<Result<string>> nestedResult = Ok<Result<string>>(Error<string>(innerResult));
 
 		// Act
 		var actualResult = nestedResult.Flatten();
@@ -48,47 +48,5 @@ public class FlattenResultExtensionsTests
 		// Assert
 		Assert.False(actualResult.IsSucceed);
 		Assert.Equal(innerResult, actualResult.Errors);
-	}
-
-	[Fact]
-	public void Flatten_OnSuccessfulOuterButFailedInnerEmptyResult_ReturnsFailedInnerResult()
-	{
-		// Arrange
-		var innerResult = new object[] { "InnerError1", "InnerError2" };
-		Result<Result> nestedResult = new Ok<Result>(new Error(innerResult));
-
-		// Act
-		var actualResult = nestedResult.Flatten();
-
-		Assert.False(actualResult.IsSucceed);
-		Assert.Equal(innerResult, actualResult.Errors);
-	}
-	
-	[Fact]
-	public void Flatten_OnSuccessfulOuterAndSuccessfulInnerEmptyResult_ReturnsSuccessfulInnerResult()
-	{
-		// Arrange
-		Result<Result> nestedResult = new Ok<Result>(new Ok());
-
-		// Act
-		var actualResult = nestedResult.Flatten();
-
-		Assert.True(actualResult.IsSucceed);
-	}
-		
-	[Fact]
-	public void Flatten_OnFailedOuterResultAndEmptyInnerResult_ReturnsNewErrorResultWithOuterErrors()
-	{
-		// Arrange
-		var outerResult = new object[] { "OuterError1", "OuterError2" };
-		Result<Result> nestedResult = new Error(outerResult);
-
-		// Act
-		var actualResult = nestedResult.Flatten();
-
-		// Assert
-		Assert.False(actualResult.IsSucceed);
-		Assert.Equal(outerResult, actualResult.Errors);
-
 	}
 }

@@ -1,15 +1,15 @@
-using Results.ResultTypes;
+using static Results.ResultFactory;
 // ReSharper disable InconsistentNaming
 
 namespace Results.Extensions;
 
 /// <summary>
-/// Extensions for performing logical AND operations on <see cref="Results.Result{TValue}"/> objects.
+/// Extensions for performing logical operations on <see cref="Result{TValue}"/> objects.
 /// </summary>
-public static class LogicalAndOperationResultExtensions
+public static class LogicalOperationResultExtensions
 {
 	/// <summary>
-	/// Performs a logical AND operation between <see cref="Results.Result{TValue}"/> objects.
+	/// Performs a logical AND operation between <see cref="Result{TValue}"/> objects.
 	/// </summary>
 	/// <typeparam name="T">The type of the value associated with the self result.</typeparam>
 	/// <typeparam name="U">The type of the value associated with the result received as parameter.</typeparam>
@@ -40,5 +40,41 @@ public static class LogicalAndOperationResultExtensions
 	public static Result<U> And<T, U>(this Result<T> self, Result<U> result)
 		=> self.IsSucceed
 			? result
-			: new Error(self.Errors);
+			: Error<U>(self.Error()!, self.StatusCode);
+	
+	/// <summary>
+	/// Performs a logical OR operation between <see cref="Result{TValue}"/> objects.
+	/// </summary>
+	/// <typeparam name="T">The type of the value associated with this result and the result received as parameter.</typeparam>
+	/// <param name="self">The first <see cref="Result{TValue}"/> object.</param>
+	/// <param name="result">The second <see cref="Result{TValue}"/> object.</param>
+	/// <returns>
+	/// A new <see cref="Result{TValue}"/> object that is the result of the logical OR operation.
+	/// If the first <see cref="Result{TValue}"/> is faulted, the second <see cref="Result{TValue}"/> is returned.
+	/// Otherwise, the first <see cref="Result{TValue}"/> object is returned.
+	/// </returns>
+	/// <remarks>
+	///		<code>
+	///			Result&lt;int&gt; x = new Ok(2);
+	///			Result&lt;int&gt; y = new Ok(3);
+	///			Assert.Equal(x.Or(y), x);
+	///
+	/// 
+	///			Result&lt;int&gt; x = new Ok(2);
+	///			Result&lt;int&gt; y = new Error("late error");
+	///			Assert.Equal(x.Or(y), x);
+	/// 
+	///			Result&lt;int&gt; x = new Error("early error");
+	///			Result&lt;int&gt; y = new Ok(3);
+	///			Assert.Equal(x.Or(y), y);
+	/// 
+	///			Result&lt;int&gt; x = new Error("early error");
+	///			Result&lt;int&gt; y = new Error("late error");
+	///			Assert.Equal(x.Or(y), y);
+	///		</code>
+	/// </remarks>
+	public static Result<T> Or<T>(this Result<T> self, Result<T> result)
+		=> self.IsFaulted
+			? result
+			: self;
 }

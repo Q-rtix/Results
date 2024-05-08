@@ -4,7 +4,7 @@ using Results.WellKnownErrors;
 namespace Results.Extensions;
 
 /// <summary>
-/// Extensions for ensuring that a <see cref="Results.Result{TValue}"/> satisfies a given predicate.
+/// Extensions for ensuring that a <see cref="Result{TValue}"/> satisfies a given predicate.
 /// </summary>
 public static class EnsureResultOfTExtensions
 {
