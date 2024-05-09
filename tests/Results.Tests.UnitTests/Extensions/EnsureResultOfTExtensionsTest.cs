@@ -3,6 +3,8 @@ using Results.Extensions;
 using Results.ResultTypes;
 using Results.WellKnownErrors;
 
+using static Results.ResultFactory;
+
 namespace Results.Tests.UnitTests.Extensions;
 
 [TestSubject(typeof(EnsureResultOfTExtensions))]
@@ -13,9 +15,9 @@ public class EnsureResultOfTExtensionsTest
 	public void Ensure_WhenSelfResultIsFaulted_ReturnsSelf()
 	{
 		// Act
-		var result = ResultFactory.Create<int>()
+		var result = Error<int>(WellKnownError.NullValue)
 			.Ensure(x => x > 0, new Error("Less than zero"));
-		
+
 		// Assert
 		Assert.True(result.IsFaulted);
 		Assert.Equal([WellKnownError.NullValue], result.Errors);
@@ -25,9 +27,9 @@ public class EnsureResultOfTExtensionsTest
 	public void Ensure_WhenSelfResultIsSucceedAndPredicateIsTrue_ReturnsSelf()
 	{
 		// Act
-		var result = ResultFactory.Create<int>(1)
+		var result = Ok(1)
 			.Ensure(x => x > 0, new Error("Less than zero"));
-		
+
 		// Assert
 		Assert.True(result.IsSucceed);
 		Assert.Equal(1, result.Value);
@@ -37,9 +39,9 @@ public class EnsureResultOfTExtensionsTest
 	public void Ensure_WhenSelfResultIsSucceedAndPredicateIsFalse_ReturnsError()
 	{
 		// Act
-		var result = ResultFactory.Create<int>(-1)
+		var result = Ok(-1)
 			.Ensure(x => x > 0, new Error("Less than zero"));
-		
+
 		// Assert
 		Assert.True(result.IsFaulted);
 		Assert.Equal(["Less than zero"], result.Errors);
@@ -49,9 +51,9 @@ public class EnsureResultOfTExtensionsTest
 	public void Ensure_UsingParams()
 	{
 		// Act
-		var result = ResultFactory.Create<int>(-1)
+		var result = Ok(-1)
 			.Ensure(x => x > 0, "Less than zero");
-		
+
 		// Assert
 		Assert.True(result.IsFaulted);
 		Assert.Equal(["Less than zero"], result.Errors);

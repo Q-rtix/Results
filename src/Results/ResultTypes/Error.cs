@@ -3,7 +3,7 @@ namespace Results.ResultTypes;
 /// <summary>
 ///     Represents a result type indicating an operation failure with error data.
 /// </summary>
-public class Error : ResultType
+public record Error : ResultType
 {
     /// <summary>
     ///     Initializes a new instance of the <see cref="Error" /> class.

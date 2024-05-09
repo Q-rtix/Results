@@ -1,5 +1,5 @@
 using Results.ResultTypes;
-using Results.WellKnownErrors;
+using static Results.ResultFactory;
 
 namespace Results.Tests.UnitTests.ResultTests;
 
@@ -12,7 +12,7 @@ public class ResultOfTTests
 		const string error = "Test exception";
 
 		// Act
-		Result<int> result = new Error(error);
+		var result = Error(error);
 
 		// Assert
 		Assert.True(result.IsFaulted);
@@ -25,7 +25,7 @@ public class ResultOfTTests
 	public void ResultOfT_ImplicitOperator_WhenResultIsOk()
 	{
 		// Act
-		Result<int> result = new Ok<int>(2);
+		var result = Ok(2);
 
 		// Assert
 		Assert.Equal(typeof(Ok<int>), result.ResultType);
@@ -40,7 +40,7 @@ public class ResultOfTTests
 		const string value = "successful value";
 
 		// Act
-		Result<string> result = new Ok<string>(value);
+		var result = Ok(value);
 
 		// Assert
 		Assert.Equal(value, result.Value);
@@ -54,7 +54,7 @@ public class ResultOfTTests
 		var errors = new List<object> { "error 1", "error 2" };
 
 		// Act
-		Result<string> result = new Error(errors);
+		var result = Error(errors);
 
 		// Assert
 		Assert.Equal(errors, result.Errors);
@@ -68,7 +68,7 @@ public class ResultOfTTests
 		const string value = "successful value";
 
 		// Act
-		Result<string> result = new Ok<string>(value);
+		var result = Ok(value);
 
 		// Assert
 		Assert.Equal(typeof(Ok<string>), result.ResultType);
@@ -80,7 +80,7 @@ public class ResultOfTTests
 		// Arrange
 		var errors = new List<object> { "error 1", "error 2" };
 		// Act
-		Result<string> result = new Error(errors);
+		var result = Error<string>(errors);
 		// Assert
 		Assert.Equal(typeof(Error), result.ResultType);
 	}
@@ -90,7 +90,7 @@ public class ResultOfTTests
 	{
 		// Arrange
 		const string value = "successful value";
-		Result<string> result = new Ok<string>(value);
+		Result<string> result = Ok<string>(value);
 
 		// Act
 		var resultValue = result.Value;
@@ -104,7 +104,7 @@ public class ResultOfTTests
 	{
 		// Arrange
 		var errors = new List<object> { "error 1", "error 2" };
-		Result<int> result = new Error(errors);
+		var result = Error(errors);
 
 		// Act & Assert
 		Assert.Throws<InvalidOperationException>(() => result.Value);
@@ -115,7 +115,7 @@ public class ResultOfTTests
 	{
 		// Arrange
 		const string value = "successful value";
-		Result<string> result = new Ok<string>(value);
+		Result<string> result = Ok<string>(value);
 
 		// Act
 		var resultValue = result.GetValueOrDefault();
@@ -129,7 +129,7 @@ public class ResultOfTTests
 	{
 		// Arrange
 		var errors = new List<object> { "error 1", "error 2" };
-		Result<int> result = new Error(errors);
+		var result = Error(errors);
 
 		// Act
 		var resultValue = result.GetValueOrDefault();
@@ -143,7 +143,7 @@ public class ResultOfTTests
 	{
 		// Arrange
 		const string value = "successful value";
-		Result<string> result = new Ok<string>(value);
+		Result<string> result = Ok<string>(value);
 
 		// Act
 		var resultValue = result.GetValueOr("default value");
@@ -157,7 +157,7 @@ public class ResultOfTTests
 	{
 		// Arrange
 		var errors = new List<object> { "error 1", "error 2" };
-		Result<string> result = new Error(errors);
+		var result = Error<string>(errors);
 
 		// Act
 		var resultValue = result.GetValueOr("default value");
@@ -171,7 +171,7 @@ public class ResultOfTTests
 	{
 		// Arrange
 		const string value = "successful value";
-		Result<string> result = new Ok<string>(value);
+		Result<string> result = Ok<string>(value);
 
 		// Act
 		var resultValue = result.GetValueOrElse((error) => error.ToString());
@@ -185,7 +185,7 @@ public class ResultOfTTests
 	{
 		// Arrange
 		var errors = new List<object> { "error 1", "error 2" };
-		Result<string> result = new Error(errors);
+		Result<string> result = Error<string>(errors);
 
 		// Act
 		var resultValue = result.GetValueOrElse((error) =>
@@ -200,7 +200,7 @@ public class ResultOfTTests
 	{
 		// Arrange
 		const string value = "successful value";
-		Result<string> result = new Ok<string>(value);
+		Result<string> result = Ok<string>(value);
 
 		// Act
 		var resultValue = result.Match(success: val => val,
@@ -215,7 +215,7 @@ public class ResultOfTTests
 	{
 		// Arrange
 		var errors = new List<object> { "error 1", "error 2" };
-		Result<string> result = new Error(errors);
+		Result<string> result = Error<string>(errors);
 
 		// Act
 		var resultValue =
@@ -230,7 +230,7 @@ public class ResultOfTTests
 	public void ResultOfT_OnSuccess_WhenResultTypeIsOk_CallsSuccessFunction()
 	{
 		// Arrange
-		Result<int> result = new Ok<int>(5);
+		Result<int> result = Ok<int>(5);
 		
 		// Act
 		var resultValue = result.OnSuccess(x => x + 1);
@@ -243,7 +243,7 @@ public class ResultOfTTests
 	public void ResultOfT_OnSuccess_WhenResultTypeIsError_ReturnsDefaultValue()
 	{
 		// Arrange
-		Result<int> result = new Error(new List<object> { "error 1", "error 2" });
+		Result<int> result = Error<int>(new List<object> { "error 1", "error 2" });
 		
 		// Act
 		var resultValue = result.OnSuccess(x => x + 1);
@@ -256,7 +256,7 @@ public class ResultOfTTests
 	public void ResultOfT_Inspect_WhenResultTypeIsOk_CallsSuccessFunction()
 	{
 		// Arrange
-		Result<int> result = new Ok<int>(5);
+		Result<int> result = Ok(5);
 		
 		// Act & Assert
 		result.Inspect(x => Assert.Equal(5, x));
@@ -266,7 +266,7 @@ public class ResultOfTTests
 	public void ResultOfT_Inspect_WhenResultTypeIsError_DoesNotCallSuccessFunction()
 	{
 		// Arrange
-		Result<int> result = new Error(new List<object> { "error 1", "error 2" });
+		Result<int> result = Error<int>(errors:new List<object> { "error 1", "error 2" });
 		
 		// Act & Assert
 		result.Inspect(x => throw new Exception("Inspect should not call fail function"));
@@ -276,7 +276,7 @@ public class ResultOfTTests
 	public void ResultOfT_InspectError_WhenResultTypeIsOk_DoesNotCallFailFunction()
 	{
 		// Arrange
-		Result<int> result = new Ok<int>(5);
+		Result<int> result = Ok(5);
 		
 		// Act & Assert
 		result.InspectError(x => throw new Exception("InspectError should not call success function"));
@@ -286,7 +286,7 @@ public class ResultOfTTests
 	public void ResultOfT_InspectError_WhenResultTypeIsError_CallsFailFunction()
 	{
 		// Arrange
-		Result<int> result = new Error(new List<object> { "error 1", "error 2" });
+		Result<int> result = Error<int>(new List<object> { "error 1", "error 2" });
 		
 		// Act & Assert
 		result.InspectError(x => Assert.Equal("error 1", x.Errors[0]));

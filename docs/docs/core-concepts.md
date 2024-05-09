@@ -9,10 +9,9 @@ library.
 At the heart of **Qrtix.Results** are two main result types: `Result` and `Result<TValue>`. These types represent the
 outcome of an operation and can either indicate success or failure.
 
-- `Result`: Represents the result of an operation that can either succeed or fail. It provides properties and methods
-  to inspect the outcome of the operation and handle errors if necessary.
+- `Empty`: Represents an empty object that represents the absence of data in the result.
 
-- `Result<TValue>`: A generic version of `Result` that includes a value of type `TValue` in case of a successful
+- `Result<TValue>`: A generic `Result` that includes a value of type `TValue` in case of a successful
   operation. This type allows you to work with the result value directly without needing to cast or unwrap it.
 
 ## Error Handling

@@ -1,117 +1,206 @@
 using Results.Extensions;
 using Results.ResultTypes;
+using static Results.ResultFactory;
 
 namespace Results.Tests.UnitTests.Extensions;
 
 public class MapperResultExtensionsTests
 {
-    [Fact]
-    public void MapWithNonGeneric_ShouldReturnMappedResult_WhenPriorResultIsSucceed()
-    {
-        // Arrange
-        Result firstResult = new Ok();
+	[Fact]
+	public async Task MapAsync_ShouldReturnMappedResult_WhenPriorResultIsSucceed()
+	{
+		// Arrange
+		var firstResult = Ok<int>(5);
 
-        // Act
-        var actual = firstResult.Map(() => "Mapped to string");
+		// Act
+		var actual = await firstResult.MapAsync(async (v) => "Mapped to string: " + await Task.Run(v.ToString));
 
-        // Assert
-        Assert.Equal(typeof(Ok<string>), actual.ResultType);
-        Assert.Equal("Mapped to string", actual.Value);
-    }
+		// Assert
+		Assert.Equal(typeof(Ok<string>), actual.ResultType);
+		Assert.Equal("Mapped to string: 5", actual.Value);
+	}
 
-    [Fact]
-    public void MapWithNonGeneric_ShouldReturnFirstResult_WhenPriorResultIsFailed()
-    {
-        // Arrange
-        Result firstResult = new Error("Error from first result");
+	[Fact]
+	public async Task MapAsync_ShouldReturnFirstResult_WhenPriorResultIsFailed()
+	{
+		// Arrange
+		var firstResult = Error<string>("Error from first result");
 
-        // Act
-        var actual = firstResult.Map(() => "Mapped to string");
+		// Act
+		var actual = await firstResult.MapAsync(async (v) => "Mapped to string" + await Task.Run(v.ToString));
 
-        // Assert
-        Assert.Equal(typeof(Error), actual.ResultType);
-        Assert.Equal(["Error from first result"], actual.Errors);
-    }
+		// Assert
+		Assert.Equal(typeof(Error), actual.ResultType);
+		Assert.Equal(["Error from first result"], actual.Errors);
+	}
 
-    [Fact]
-    public void MapWithGeneric_ShouldReturnMappedResult_WhenPriorResultIsSucceed()
-    {
-        // Arrange
-        Result<int> firstResult = new Ok<int>(5);
+	[Fact]
+	public void Map_ShouldReturnMappedResult_WhenPriorResultIsSucceed()
+	{
+		// Arrange
+		var firstResult = Ok<int>(5);
 
-        // Act
-        var actual = firstResult.Map(i => $"Mapped to string: {i}");
+		// Act
+		var actual = firstResult.Map(i => $"Mapped to string: {i}");
 
-        // Assert
-        Assert.Equal(typeof(Ok<string>), actual.ResultType);
-        Assert.Equal("Mapped to string: 5", actual.Value);
-    }
+		// Assert
+		Assert.Equal(typeof(Ok<string>), actual.ResultType);
+		Assert.Equal("Mapped to string: 5", actual.Value);
+	}
 
-    [Fact]
-    public void MapWithGeneric_ShouldReturnFirstResult_WhenPriorResultIsFailed()
-    {
-        // Arrange
-        Result<int> firstResult = new Error("Error from first result");
+	[Fact]
+	public void Map_ShouldReturnFirstResult_WhenPriorResultIsFailed()
+	{
+		// Arrange
+		var firstResult = Error<int>("Error from first result");
 
-        // Act
-        var actual = firstResult.Map(i => $"Mapped to string: {i}");
+		// Act
+		var actual = firstResult.Map(i => $"Mapped to string: {i}");
 
-        // Assert
-        Assert.Equal(typeof(Error), actual.ResultType);
-        Assert.Equal("Error: Error from first result", actual.ToString());
-    }
+		// Assert
+		Assert.Equal(typeof(Error), actual.ResultType);
+		Assert.Equal("Error: Error from first result", actual.ToString());
+	}
 
-    [Fact]
-    public void MapError_ShouldReturnMappedError_WhenResultIsFailed()
-    {
-        // Arrange
-        Result initialResult = new Error("Error from initial result");
+	[Fact]
+	public void MapOr_ShouldReturnMappedValue_WhenResultIsSucceed()
+	{
+		// Arrange
+		var initialResult = Ok<int>(5);
+		const string defaultValue = "Default value";
 
-        // Act
-        var actual = initialResult.MapError(error => new Error($"Mapped error: {error}"));
+		// Act
+		var actual = initialResult.MapOr(i => $"Mapped value: {i}", defaultValue);
 
-        // Assert
-        Assert.Equal("Error: Mapped error: Error from initial result", actual.ToString());
-    }
+		// Assert
+		Assert.Equal("Mapped value: 5", actual);
+	}
 
-    [Fact]
-    public void MapError_ShouldReturnInitialOkResult_WhenResultIsSucceed()
-    {
-        // Arrange
-        Result initialResult = new Ok();
+	[Fact]
+	public void MapOr_ShouldReturnDefaultValue_WhenResultIsFailed()
+	{
+		// Arrange
+		var initialResult = Error<int>("Error from initial result");
+		const string defaultValue = "Default value";
 
-        // Act
-        var actual = initialResult.MapError(error => new Error($"Mapped error: {error.Errors}"));
+		// Act
+		var actual = initialResult.MapOr(i => $"Mapped value: {i}", defaultValue);
 
-        // Assert
-        Assert.Equal(typeof(Ok), actual.ResultType);
-    }
+		// Assert
+		Assert.Equal(defaultValue, actual);
+	}
 
-    [Fact]
-    public void MapErrorWithGeneric_ShouldReturnMappedError_WhenResultIsFailed()
-    {
-        // Arrange
-        Result<string> initialResult = new Error("Error from initial result");
+	[Fact]
+	public void MapOrElse_ShouldReturnMappedValue_WhenResultIsSucceed()
+	{
+		// Arrange
+		var initialResult = Ok<int>(5);
 
-        // Act
-        var actual = initialResult.MapError(error => new Error($"Mapped error: {error}"));
+		// Act
+		var actual = initialResult.MapOrElse(
+			i => $"Mapped value: {i}",
+			e => "Default value");
 
-        // Assert
-        Assert.Equal(typeof(Error), actual.ResultType);
-        Assert.Equal("Error: Mapped error: Error from initial result", actual.ToString());
-    }
+		// Assert
+		Assert.Equal("Mapped value: 5", actual);
+	}
 
-    [Fact]
-    public void MapErrorWithGeneric_ShouldReturnInitialOkResult_WhenResultIsSucceed()
-    {
-        // Arrange
-        Result<string> initialResult = new Ok<string>("Success from initial result");
+	[Fact]
+	public void MapOrElse_ShouldReturnDefaultFunctionValue_WhenResultIsFailed()
+	{
+		// Arrange
+		var initialResult = Error<int>("Error from initial result");
 
-        // Act
-        var actual = initialResult.MapError(error => new Error($"Mapped error: {error}"));
+		// Act
+		var actual = initialResult.MapOrElse(
+			i => $"Mapped value: {i}",
+			e => $"Default function value: {e}");
 
-        // Assert
-        Assert.Equal(typeof(Ok<string>), actual.ResultType);
-        Assert.Equal("Success from initial result", actual.Value);
-    }
+		// Assert
+		Assert.Equal("Default function value: Error from initial result", actual);
+	}
+
+	[Fact]
+	public async Task MapOrAsync_ShouldReturnMappedValue_WhenResultIsSucceed()
+	{
+		// Arrange
+		var initialResult = Ok<int>(5);
+
+		// Act
+		var actual = await initialResult
+			.MapOrAsync(async i => $"Mapped value: " + await Task.Run(i.ToString),  "Default value");
+
+		// Assert
+		Assert.Equal("Mapped value: 5", actual);
+	}
+
+	[Fact]
+	public async Task MapOrAsync_ShouldReturnDefaultValue_WhenResultIsFailed()
+	{
+		// Arrange
+		var initialResult = Error<int>("Error from initial result");
+
+		// Act
+		var actual = await initialResult
+			.MapOrAsync(async i => $"Mapped value: " + await Task.Run(i.ToString),  "Default value");
+
+		// Assert
+		Assert.Equal("Default value", actual);
+	}
+
+	[Fact]
+	public async Task MapOrElseAsync_ShouldReturnMappedValue_WhenResultIsSucceed()
+	{
+		// Arrange
+		var initialResult = Ok<int>(5);
+
+		// Act
+		var actual = await initialResult
+			.MapOrElseAsync(async i => $"Mapped value: " + await Task.Run(i.ToString), e => $"Errors: {e}");
+
+		// Assert
+		Assert.Equal("Mapped value: 5", actual);
+	}
+
+	[Fact]
+	public async Task MapOrElseAsync_ShouldReturnDefaultFunctionValue_WhenResultIsFailed()
+	{
+		// Arrange
+		var initialResult = Error<int>("Error from initial result");
+
+		// Act
+		var actual = await initialResult
+			.MapOrElseAsync(async i => $"Mapped value: " + await Task.Run(i.ToString), e => $"Errors: {e}");
+
+		// Assert
+		Assert.Equal("Errors: Error from initial result", actual);
+	}
+
+	[Fact]
+	public async Task MapOrElseAsync_WithAsyncPredicate_ShouldReturnMappedValue_WhenResultIsSucceed()
+	{
+		// Arrange
+		var initialResult = Ok<int>(5);
+
+		// Act
+		var actual = await initialResult
+			.MapOrElseAsync(async i => $"Mapped value: " + await Task.Run(i.ToString), async e => $"Errors: " + await Task.Run(e.ToString));
+
+		// Assert
+		Assert.Equal("Mapped value: 5", actual);
+	}
+
+	[Fact]
+	public async Task MapOrElseAsync_WithAsyncPredicate_ShouldReturnDefaultFunctionValue_WhenResultIsFailed()
+	{
+		// Arrange
+		var initialResult = Error<int>("Error from initial result");
+
+		// Act
+		var actual = await initialResult
+			.MapOrElseAsync(async i => $"Mapped value: " + await Task.Run(i.ToString), async e => $"Errors: " + await Task.Run(e.ToString));
+
+		// Assert
+		Assert.Equal("Errors: Error from initial result", actual);
+	}
 }

@@ -3,16 +3,16 @@
 ```csharp
 // Basic usage example of creating and handling a Result object
 using Qrtix.Results;
-using Qrtix.Results.ResultTypes;
+using static Qrtix.Results.ResultFactory;
 
 public class BasicUsageExample
 {
     public Result<int> Divide(int numerator, int denominator)
     {
         if (denominator == 0)
-            return new Error("Division by zero error");
+            return Error<int>("Division by zero error");
 
-        return new Ok<int>(numerator / denominator);
+        return Ok(numerator / denominator);
     }
 
     public void Run()
@@ -21,11 +21,11 @@ public class BasicUsageExample
 
         if (result.IsSucceed)
         {
-            Console.WriteLine("Result: " + result.Value);
+            Console.WriteLine($"Result -> {result}"); // Output: Result -> Ok: 2
         }
         else
         {
-            Console.WriteLine("Error: " + result.Errors);
+            Console.WriteLine("Result -> {result}"); // Output: Result -> Error: Division by zero error
         }
     }
 }
