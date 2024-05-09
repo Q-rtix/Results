@@ -1,5 +1,6 @@
 using Results.Extensions;
 using Results.ResultTypes;
+using static Results.ResultFactory;
 
 namespace Results.Tests.UnitTests.Extensions;
 
@@ -9,50 +10,50 @@ public class LogicalOrOperationExtensionsTests
     public void Or_ShouldReturnFirstResult_WhenBothResultsAreSucceed()
     {
         // Arrange
-        Result firstResult = new Ok();
-        Result secondResult = new Ok();
+        var firstResult = Ok();
+        var secondResult = Ok();
 
         // Act
         var actual = firstResult.Or(secondResult);
 
         // Assert
-        Assert.Equal(typeof(Ok), actual.ResultType);
+        Assert.Equal(typeof(Ok<Empty>), actual.ResultType);
     }
 
     [Fact]
     public void Or_ShouldReturnSecondResult_WhenFirstResultIsFailed_And_SecondResultIsSucceed()
     {
         // Arrange
-        Result firstResult = new Error("Error from first result");
-        Result secondResult = new Ok();
+        var firstResult = Error("Error from first result");
+        var secondResult = Ok();
 
         // Act
         var actual = firstResult.Or(secondResult);
 
         // Assert
-        Assert.Equal(typeof(Ok), actual.ResultType);
+        Assert.Equal(typeof(Ok<Empty>), actual.ResultType);
     }
 
     [Fact]
     public void Or_ShouldReturnFirstResult_WhenFirstResultIsSucceed_And_SecondResultIsFailed()
     {
         // Arrange
-        Result firstResult = new Ok();
-        Result secondResult = new Error("Error from second result");
+        var firstResult = Ok();
+        var secondResult = Error("Error from second result");
 
         // Act
         var actual = firstResult.Or(secondResult);
 
         // Assert
-        Assert.Equal(typeof(Ok), actual.ResultType);
+        Assert.Equal(typeof(Ok<Empty>), actual.ResultType);
     }
 
     [Fact]
     public void Or_ShouldReturnSecondResult_WhenBothResultsAreFailed()
     {
         // Arrange
-        Result firstResult = new Error("Error from first result");
-        Result secondResult = new Error("Error from second result");
+        var firstResult = Error("Error from first result");
+        var secondResult = Error("Error from second result");
 
         // Act
         var actual = firstResult.Or(secondResult);
@@ -66,8 +67,8 @@ public class LogicalOrOperationExtensionsTests
     public void OrWithGeneric_ShouldReturnFirstResult_WhenBothResultsAreSucceed()
     {
         // Arrange
-        Result<string> firstResult = new Ok<string>("Success from first result");
-        Result<string> secondResult = new Ok<string>("Success from second result");
+        var firstResult = Ok<string>("Success from first result");
+        var secondResult = Ok<string>("Success from second result");
 
         // Act
         var actual = firstResult.Or(secondResult);
@@ -81,8 +82,8 @@ public class LogicalOrOperationExtensionsTests
     public void OrWithGeneric_ShouldReturnSecondResult_WhenFirstResultIsFailed_And_SecondResultIsSucceed()
     {
         // Arrange
-        Result<string> firstResult = new Error("Error from first result");
-        Result<string> secondResult = new Ok<string>("Success from second result");
+        var firstResult = Error<string>("Error from first result");
+        var secondResult = Ok<string>("Success from second result");
 
         // Act
         var actual = firstResult.Or(secondResult);
@@ -96,8 +97,8 @@ public class LogicalOrOperationExtensionsTests
     public void OrWithGeneric_ShouldReturnFirstResult_WhenFirstResultIsSucceed_And_SecondResultIsFailed()
     {
         // Arrange
-        Result<string> firstResult = new Ok<string>("Success from first result");
-        Result<string> secondResult = new Error("Error from second result");
+        var firstResult = Ok<string>("Success from first result");
+        var secondResult = Error<string>("Error from second result");
 
         // Act
         var actual = firstResult.Or(secondResult);
@@ -111,8 +112,8 @@ public class LogicalOrOperationExtensionsTests
     public void OrWithGeneric_ShouldReturnSecondResult_WhenBothResultsAreFailed()
     {
         // Arrange
-        Result<string> firstResult = new Error("Error from first result");
-        Result<string> secondResult = new Error("Error from second result");
+        var firstResult = Error("Error from first result");
+        var secondResult = Error("Error from second result");
 
         // Act
         var actual = firstResult.Or(secondResult);
