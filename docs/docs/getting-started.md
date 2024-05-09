@@ -31,8 +31,8 @@ the necessary `using` directives in your code files to access the **Qrtix.Result
 
 ```csharp
 using Results;
-using Results.ResultTypes;
 using Results.Extensions;
+using static Results.ResultFactory;
 ```
 
 ## Basic Usage
@@ -68,7 +68,7 @@ class Program
     static Result<int> SomeOperation()
     {
         // Simulate a successful operation
-        return new Ok<int>(42);
+        return Ok(42);
     }
 }
 ```

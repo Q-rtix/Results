@@ -9,7 +9,6 @@ Implement a custom base controller that handles Result objects and standardizes 
 ```csharp
 using Microsoft.AspNetCore.Mvc;
 using Qrtix.Results;
-using Qrtix.Results.ResultTypes;
 using System;
 
 public class BaseController : ControllerBase
@@ -72,8 +71,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Qrtix.Results;
-using Qrtix.Results.ResultTypes;
 using System;
+using static Qrtix.Results.ResultFactory;
 
 public static class ErrorHandlingMiddlewareExtensions
 {
@@ -92,8 +91,8 @@ public static class ErrorHandlingMiddlewareExtensions
                     var error = errorFeature.Error;
                     var result = error switch
                     {
-                        BusinessException e => new Error(e.Message),
-                        _ => new Error("An unexpected error occurred"),
+                        BusinessException e => Error(e.Message),
+                        _ => Error("An unexpected error occurred"),
                     };
 
                     await context.Response.WriteAsync(result.ToString());

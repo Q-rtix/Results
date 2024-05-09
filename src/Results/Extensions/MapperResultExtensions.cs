@@ -146,4 +146,33 @@ public static class MapperResultExtensions
 			? await mapper(self.Value)
 			: await predicate(self.Error()!);
 	
+	/// <summary>
+	/// Maps the error of a <see cref="Result{TValue}"/> object to a new <see cref="Result{TValue}"/> using the provided mapper function.
+	/// </summary>
+	/// <typeparam name="T">The type of value contained in the input result.</typeparam>
+	/// <param name="self">The <see cref="Result{TValue}"/> object.</param>
+	/// <param name="mapper">The mapper function that takes the current error and returns a new error.</param>
+	/// <returns>
+	/// A new <see cref="Result{TValue}"/> object with the mapped error if the input <see cref="Result{TValue}"/> is faulted;
+	/// otherwise, returns the <see cref="Result{TValue}"/> imput object.
+	/// </returns>
+	public static Result<T> MapError<T>(this Result<T> self, Func<Error, Error> mapper)
+		=> self.IsFaulted
+			? Error<T>(mapper(self.Error()!))
+			: self;
+	
+	/// <summary>
+	/// Asynchronously maps the error of a <see cref="Result{TValue}"/> object to a new <see cref="Result{TValue}"/> using the provided mapper function.
+	/// </summary>
+	/// <typeparam name="T">The type of value contained in the input result.</typeparam>
+	/// <param name="self">The <see cref="Result{TValue}"/> object.</param>
+	/// <param name="mapper">The mapper async function that takes the current error and returns a new error.</param>
+	/// <returns>
+	/// A <see cref="Task{TResult}"/> representing the asynchronous operation with the mapped error if the input <see cref="Result{TValue}"/> is faulted;
+	/// otherwise, returns the <see cref="Result{TValue}"/> imput object.
+	/// </returns>
+	public static async Task<Result<T>> MapErrorAsync<T>(this Result<T> self, Func<Error, Task<Error>> mapper)
+		=> self.IsFaulted
+			? Error<T>(await mapper(self.Error()!))
+			: self;
 }
